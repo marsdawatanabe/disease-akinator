@@ -1,0 +1,4083 @@
+{
+  "diseases": [
+    {
+      "id": "common_cold",
+      "name": "風邪（普通感冒）",
+      "department": "内科",
+      "description": "ウイルスが鼻や喉に感染して起こる急性の炎症です。通常、数日から1週間程度で自然に治癒します。",
+      "baseProbability": {
+        "male": 0.3,
+        "female": 0.3
+      },
+      "ageModifier": {
+        "0-10": 1.5,
+        "11-20": 1.0,
+        "21-40": 0.9,
+        "41-60": 0.8,
+        "61+": 0.7
+      },
+      "symptoms": [
+        {
+          "id": "fever_mild",
+          "question": "37度〜38度程度の微熱がありますか？",
+          "weight": 0.8,
+          "explanation": "風邪の初期症状として一般的です。"
+        },
+        {
+          "id": "sore_throat",
+          "question": "喉の痛みやイガイガした感じはありますか？",
+          "weight": 0.9,
+          "explanation": "咽頭の炎症を伴うことが多いです。"
+        },
+        {
+          "id": "runny_nose",
+          "question": "鼻水が出たり、鼻が詰まったりしていますか？",
+          "weight": 0.9,
+          "explanation": "鼻粘膜の炎症は風邪の代表的な症状です。"
+        },
+        {
+          "id": "cough",
+          "question": "咳が出ますか？",
+          "weight": 0.7,
+          "explanation": "気道への刺激により咳が出やすくなります。"
+        },
+        {
+          "id": "sneezing",
+          "question": "くしゃみが頻繁に出ますか？",
+          "weight": 0.6,
+          "explanation": "鼻粘膜への刺激による反応です。"
+        },
+        {
+          "id": "headache_mild",
+          "question": "軽い頭痛がありますか？",
+          "weight": 0.5,
+          "explanation": "炎症や発熱に伴い頭痛が起こることがあります。"
+        },
+        {
+          "id": "fatigue",
+          "question": "体がだるいと感じますか？",
+          "weight": 0.6,
+          "explanation": "免疫反応により全身の倦怠感が生じます。"
+        },
+        {
+          "id": "phlegm",
+          "question": "痰（たん）が絡みますか？",
+          "weight": 0.6,
+          "explanation": "炎症による分泌物が増加しているサインです。"
+        },
+        {
+          "id": "appetite_loss",
+          "question": "食欲が少し落ちていますか？",
+          "weight": 0.4,
+          "explanation": "内臓の機能が一時的に低下することがあります。"
+        },
+        {
+          "id": "chills",
+          "question": "寒気（悪寒）を感じますか？",
+          "weight": 0.5,
+          "explanation": "体温が上がる際に寒気を感じやすくなります。"
+        }
+      ]
+    },
+    {
+      "id": "influenza",
+      "name": "インフルエンザ",
+      "department": "内科",
+      "description": "インフルエンザウイルスによる感染症で、普通の風邪よりも症状が重く、急激に発症するのが特徴です。",
+      "baseProbability": {
+        "male": 0.1,
+        "female": 0.1
+      },
+      "ageModifier": {
+        "0-10": 1.4,
+        "11-20": 1.2,
+        "21-40": 1.0,
+        "41-60": 0.8,
+        "61+": 0.7
+      },
+      "symptoms": [
+        {
+          "id": "high_fever",
+          "question": "38.5度以上の急激な高熱がありますか？",
+          "weight": 1.0,
+          "explanation": "風邪との最大の違いは急激な高熱です。"
+        },
+        {
+          "id": "joint_pain",
+          "question": "関節痛や筋肉痛がありますか？",
+          "weight": 0.9,
+          "explanation": "全身症状として痛みが強く出やすいのが特徴です。"
+        },
+        {
+          "id": "severe_fatigue",
+          "question": "起き上がれないほどの強い全身倦怠感がありますか？",
+          "weight": 0.9,
+          "explanation": "非常に強い倦怠感を伴います。"
+        },
+        {
+          "id": "sudden_onset",
+          "question": "症状が急激（数時間以内）に現れましたか？",
+          "weight": 0.8,
+          "explanation": "インフルエンザは進行が非常に速いです。"
+        },
+        {
+          "id": "dry_cough",
+          "question": "乾いた咳が出ますか？",
+          "weight": 0.6,
+          "explanation": "炎症が呼吸器に広がっている可能性があります。"
+        },
+        {
+          "id": "headache_severe",
+          "question": "強い頭痛がありますか？",
+          "weight": 0.7,
+          "explanation": "高熱に伴う強い頭痛が一般的です。"
+        },
+        {
+          "id": "chills_severe",
+          "question": "ガタガタ震えるような強い寒気がありますか？",
+          "weight": 0.8,
+          "explanation": "高熱が出る前兆として現れます。"
+        },
+        {
+          "id": "loss_of_appetite_severe",
+          "question": "食欲が全くありませんか？",
+          "weight": 0.6,
+          "explanation": "全身症状の悪化に伴い食欲が著しく低下します。"
+        },
+        {
+          "id": "sore_throat_flu",
+          "question": "喉の痛みがありますか？",
+          "weight": 0.5,
+          "explanation": "全身症状の後に現れることがあります。"
+        },
+        {
+          "id": "nasal_congestion",
+          "question": "鼻づまりがありますか？",
+          "weight": 0.4,
+          "explanation": "呼吸器症状の一つとして現れます。"
+        }
+      ]
+    },
+    {
+      "id": "acute_gastroenteritis",
+      "name": "急性胃腸炎",
+      "department": "内科",
+      "description": "ウイルスや細菌が胃腸の粘膜に感染し、吐き気、下痢、腹痛を引き起こす病気です。",
+      "baseProbability": {
+        "male": 0.15,
+        "female": 0.15
+      },
+      "ageModifier": {
+        "0-10": 1.3,
+        "11-20": 1.1,
+        "21-40": 1.0,
+        "41-60": 0.9,
+        "61+": 0.8
+      },
+      "symptoms": [
+        {
+          "id": "nausea",
+          "question": "吐き気や嘔吐がありますか？",
+          "weight": 0.9,
+          "explanation": "胃の粘膜が刺激されている主なサインです。"
+        },
+        {
+          "id": "diarrhea",
+          "question": "下痢（水のような便）が出ますか？",
+          "weight": 0.9,
+          "explanation": "腸の吸収能力が低下し、水分が排出されます。"
+        },
+        {
+          "id": "abdominal_pain",
+          "question": "腹痛（特にお腹の真ん中あたり）がありますか？",
+          "weight": 0.8,
+          "explanation": "胃腸の痙攣により痛みが生じます。"
+        },
+        {
+          "id": "stomach_cramps",
+          "question": "お腹がキリキリと痛みますか？",
+          "weight": 0.7,
+          "explanation": "胃腸の急激な収縮による痛みです。"
+        },
+        {
+          "id": "low_grade_fever_gi",
+          "question": "軽い発熱がありますか？",
+          "weight": 0.5,
+          "explanation": "感染に対する生体防御反応です。"
+        },
+        {
+          "id": "dehydration_thirst",
+          "question": "喉が異常に乾きますか？",
+          "weight": 0.6,
+          "explanation": "下痢や嘔吐による脱水のサインです。"
+        },
+        {
+          "id": "borborygmi",
+          "question": "お腹がゴロゴロ鳴っていますか？",
+          "weight": 0.6,
+          "explanation": "腸の動きが活発になりすぎている状態です。"
+        },
+        {
+          "id": "loss_of_appetite_gi",
+          "question": "食べ物を見るだけで気分が悪くなりますか？",
+          "weight": 0.7,
+          "explanation": "胃腸の防御反応として食欲が消失します。"
+        },
+        {
+          "id": "weakness",
+          "objective": "体に力が入らない感じがしますか？",
+          "weight": 0.5,
+          "explanation": "脱水やエネルギー不足によるものです。"
+        },
+        {
+          "id": "bloating",
+          "question": "お腹が張っている感じがしますか？",
+          "weight": 0.4,
+          "explanation": "腸内にガスが溜まりやすくなっています。"
+        }
+      ]
+    },
+    {
+      "id": "gerd",
+      "name": "逆流性食道炎",
+      "department": "内科",
+      "description": "胃酸が食道に逆流し、食道の粘膜が荒れてしまう病気です。食生活の欧米化で増えています。",
+      "baseProbability": {
+        "male": 0.1,
+        "female": 0.08
+      },
+      "ageModifier": {
+        "0-10": 0.1,
+        "11-20": 0.5,
+        "21-40": 1.0,
+        "41-60": 1.3,
+        "61+": 1.5
+      },
+      "symptoms": [
+        {
+          "id": "heartburn",
+          "question": "胸焼け（胸のあたりが熱い感じ）がありますか？",
+          "weight": 1.0,
+          "explanation": "胃酸が食道粘膜を刺激する代表的な症状です。"
+        },
+        {
+          "id": "acid_reflux",
+          "question": "酸っぱい液体が上がってくる感じ（呑酸）がありますか？",
+          "weight": 1.0,
+          "explanation": "胃酸の逆流そのものを指す症状です。"
+        },
+        {
+          "id": "chest_pain_noncardiac",
+          "question": "みぞおちの上あたりが痛みますか？",
+          "weight": 0.7,
+          "explanation": "逆流による刺激が痛みとして感じられます。"
+        },
+        {
+          "id": "throat_discomfort",
+          "question": "喉に違和感（何かつまっている感じ）がありますか？",
+          "weight": 0.6,
+          "explanation": "逆流した胃酸が喉付近まで到達している可能性があります。"
+        },
+        {
+          "id": "cough_after_meals",
+          "question": "食後に咳が出やすいですか？",
+          "weight": 0.5,
+          "explanation": "逆流が気道を刺激して咳を誘発します。"
+        },
+        {
+          "id": "belching",
+          "question": "ゲップがよく出ますか？",
+          "weight": 0.6,
+          "explanation": "胃内のガスと共に胃酸が上がりやすくなっています。"
+        },
+        {
+          "id": "abdominal_fullness",
+          "question": "お腹が張っている感じがしますか？",
+          "weight": 0.4,
+          "explanation": "胃の動きが低下しているサインです。"
+        },
+        {
+          "id": "sore_throat_chronic",
+          "question": "喉が慢性的にヒリヒリしますか？",
+          "weight": 0.5,
+          "explanation": "微量の逆流が喉の粘膜を傷つけている可能性があります。"
+        },
+        {
+          "id": "symptoms_worse_lying_down",
+          "question": "横になると症状が悪化しますか？",
+          "weight": 0.8,
+          "explanation": "重力の関係で胃酸が逆流しやすくなるためです。"
+        },
+        {
+          "id": "symptoms_worse_after_oily_food",
+          "question": "油っこいものを食べた後に症状が出ますか？",
+          "weight": 0.7,
+          "explanation": "脂肪分は胃酸の分泌を増やし、逆流を促進します。"
+        }
+      ]
+    },
+    {
+      "id": "ibs",
+      "name": "過敏性腸症候群",
+      "department": "内科",
+      "description": "検査では異常がないのに、ストレスなどが原因で腹痛や便通異常が続く病気です。",
+      "baseProbability": {
+        "male": 0.08,
+        "female": 0.12
+      },
+      "ageModifier": {
+        "0-10": 0.3,
+        "11-20": 1.2,
+        "21-40": 1.5,
+        "41-60": 1.0,
+        "61+": 0.5
+      },
+      "symptoms": [
+        {
+          "id": "stress_abdominal_pain",
+          "question": "緊張やストレスを感じるとお腹が痛くなりますか？",
+          "weight": 1.0,
+          "explanation": "ストレスと腸の動きは密接に関係しています。"
+        },
+        {
+          "id": "relief_after_defecation",
+          "question": "排便すると腹痛が和らぎますか？",
+          "weight": 0.9,
+          "explanation": "便を出すことで腸の圧迫や痙攣が改善する特徴があります。"
+        },
+        {
+          "id": "alternating_bowel_habits",
+          "question": "下痢と便秘を繰り返しますか？",
+          "weight": 0.8,
+          "explanation": "腸の自律神経が不安定な状態です。"
+        },
+        {
+          "id": "mucus_in_stool",
+          "question": "便に粘液が混じることがありますか？",
+          "weight": 0.5,
+          "explanation": "腸粘膜の過剰な分泌によるものです。"
+        },
+        {
+          "id": "frequent_bowel_movements",
+          "question": "1日に何度もトイレに行きたくなりますか？",
+          "weight": 0.7,
+          "explanation": "腸が過敏に反応している状態です。"
+        },
+        {
+          "id": "gas_distension",
+          "question": "おならがよく出たり、お腹が張ったりしますか？",
+          "weight": 0.6,
+          "explanation": "腸内細菌のバランスや空気の飲み込みが影響します。"
+        },
+        {
+          "id": "morning_urgency",
+          "question": "特に朝方、急にトイレに行きたくなりますか？",
+          "weight": 0.7,
+          "explanation": "朝の活動開始時に腸が過剰反応しやすいです。"
+        },
+        {
+          "id": "incomplete_evacuation",
+          "question": "出した後も「まだ残っている感じ」がありますか？",
+          "weight": 0.6,
+          "explanation": "直腸の感覚が過敏になっている証拠です。"
+        },
+        {
+          "id": "hard_stool",
+          "question": "便がうさぎの糞のようにコロコロしていますか？",
+          "weight": 0.5,
+          "explanation": "便秘型の過敏性腸症候群の特徴です。"
+        },
+        {
+          "id": "soft_stool",
+          "question": "便が細かったり、形が崩れていたりしますか？",
+          "weight": 0.5,
+          "explanation": "下痢型の過敏性腸症候群の特徴です。"
+        }
+      ]
+    },
+    {
+      "id": "anemia",
+      "name": "貧血",
+      "department": "内科",
+      "description": "血液中の赤血球やヘモグロビンが減少し、全身に酸素を運ぶ能力が低下した状態です。",
+      "baseProbability": {
+        "male": 0.02,
+        "female": 0.15
+      },
+      "ageModifier": {
+        "0-10": 0.5,
+        "11-20": 1.2,
+        "21-40": 1.5,
+        "41-60": 1.3,
+        "61+": 1.1
+      },
+      "symptoms": [
+        {
+          "id": "shortness_of_breath",
+          "question": "階段を上るだけで息切れしますか？",
+          "weight": 0.9,
+          "explanation": "筋肉への酸素供給が不足しているサインです。"
+        },
+        {
+          "id": "dizziness_standing",
+          "question": "立ちくらみがしたり、頭がふわっとしたりしますか？",
+          "weight": 0.8,
+          "explanation": "脳への一時的な酸素不足が原因です。"
+        },
+        {
+          "id": "pale_skin",
+          "question": "顔色が悪い（白い）と言われますか？",
+          "weight": 0.7,
+          "explanation": "皮膚の血管を流れるヘモグロビン不足を反映します。"
+        },
+        {
+          "id": "fatigue_chronic",
+          "question": "常に体がだるく、疲れやすいですか？",
+          "weight": 0.8,
+          "explanation": "全身のエネルギー産生が低下しています。"
+        },
+        {
+          "id": "palpitations",
+          "question": "動悸（心臓のドキドキ）を感じることがありますか？",
+          "weight": 0.7,
+          "explanation": "酸素不足を補おうとして心拍数が増えます。"
+        },
+        {
+          "id": "nail_concave",
+          "question": "爪が平らになったり、反り返ったり（スプーン爪）していますか？",
+          "weight": 0.6,
+          "explanation": "鉄不足が深刻な場合に現れる特徴的な症状です。"
+        },
+        {
+          "id": "ice_craving",
+          "question": "氷を無性に食べたくなりますか？",
+          "weight": 0.6,
+          "explanation": "「氷食症」と呼ばれ、鉄欠乏性貧血によく見られます。"
+        },
+        {
+          "id": "headache_anemia",
+          "question": "慢性的な頭痛がありますか？",
+          "weight": 0.5,
+          "explanation": "脳の酸素不足が痛みを引き起こすことがあります。"
+        },
+        {
+          "id": "eyelid_conjunctiva_pale",
+          "question": "あっかんべーをした時、まぶたの裏が白いですか？",
+          "weight": 0.9,
+          "explanation": "粘膜の赤みが消えるのは典型的な貧血の所見です。"
+        },
+        {
+          "id": "ear_ringing_anemia",
+          "question": "耳鳴りがすることがありますか？",
+          "weight": 0.4,
+          "explanation": "血流の変化や酸素不足により起こる場合があります。"
+        }
+      ]
+    },
+    {
+      "id": "hypertension",
+      "name": "高血圧",
+      "department": "内科",
+      "description": "血圧が正常範囲を超えて高い状態が続く病気です。自覚症状が少ない「サイレントキラー」です。",
+      "baseProbability": {
+        "male": 0.25,
+        "female": 0.2
+      },
+      "ageModifier": {
+        "0-10": 0.1,
+        "11-20": 0.2,
+        "21-40": 0.7,
+        "41-60": 1.5,
+        "61+": 2.0
+      },
+      "symptoms": [
+        {
+          "id": "head_heaviness",
+          "question": "頭が重い感じがしたり、のぼせたりしますか？",
+          "weight": 0.6,
+          "explanation": "高血圧による血流の変化が不快感として出ることがあります。"
+        },
+        {
+          "id": "shoulder_stiffness_high_bp",
+          "question": "肩こりがひどいですか？",
+          "weight": 0.5,
+          "explanation": "血流が悪くなり、筋肉が緊張しやすくなります。"
+        },
+        {
+          "id": "dizziness_vertigo",
+          "question": "めまいを感じることがありますか？",
+          "weight": 0.5,
+          "explanation": "血圧の変動が内耳や脳に影響します。"
+        },
+        {
+          "id": "short_breath_exertion",
+          "question": "少し動いただけで息が切れますか？",
+          "weight": 0.4,
+          "explanation": "心臓に負担がかかっている可能性があります。"
+        },
+        {
+          "id": "swollen_ankles",
+          "question": "足がむくみやすいですか？",
+          "weight": 0.4,
+          "explanation": "循環機能の低下を示唆します。"
+        },
+        {
+          "id": "ear_pulsing",
+          "question": "耳の奥で心拍音が聞こえることがありますか？",
+          "weight": 0.6,
+          "explanation": "血圧が高い際に感じられることがあります。"
+        },
+        {
+          "id": "blurred_vision_bp",
+          "question": "目がかすむことがありますか？",
+          "weight": 0.4,
+          "explanation": "網膜の血管に影響が出ている可能性があります。"
+        },
+        {
+          "id": "nosebleed",
+          "question": "鼻血が出やすい、または止まりにくいですか？",
+          "weight": 0.5,
+          "explanation": "血管に圧力がかかっている証拠の一つです。"
+        },
+        {
+          "id": "no_symptoms_high_bp",
+          "question": "自覚症状は特にありませんか？",
+          "weight": 0.9,
+          "explanation": "高血圧は多くの場合、無症状で進行します。"
+        },
+        {
+          "id": "high_bp_reading",
+          "question": "血圧計で測った数値がいつも高い（上が140以上など）ですか？",
+          "weight": 1.0,
+          "explanation": "これが最も確実な指標です。"
+        }
+      ]
+    },
+    {
+      "id": "diabetes",
+      "name": "糖尿病",
+      "department": "内科",
+      "description": "インスリンの働きが不十分で、血液中の糖分（血糖値）が高くなる病気です。",
+      "baseProbability": {
+        "male": 0.15,
+        "female": 0.1
+      },
+      "ageModifier": {
+        "0-10": 0.1,
+        "11-20": 0.2,
+        "21-40": 0.8,
+        "41-60": 1.5,
+        "61+": 1.8
+      },
+      "symptoms": [
+        {
+          "id": "excessive_thirst",
+          "question": "喉が非常に乾き、飲み物をたくさん飲みますか？",
+          "weight": 0.9,
+          "explanation": "高血糖により尿量が増え、体が水分を欲しがります。"
+        },
+        {
+          "id": "polyuria",
+          "question": "尿の回数や量が増えましたか？",
+          "weight": 0.9,
+          "explanation": "余分な糖を尿と一緒に排出しようとするためです。"
+        },
+        {
+          "id": "weight_loss_unexplained",
+          "question": "食べているのに体重が減ってきましたか？",
+          "weight": 0.8,
+          "explanation": "糖をエネルギーとしてうまく利用できず、筋肉や脂肪が分解されます。"
+        },
+        {
+          "id": "blurred_vision",
+          "question": "目がかすんだり、視力が落ちたりしましたか？",
+          "weight": 0.6,
+          "explanation": "高血糖が網膜や水晶体に影響を与えます。"
+        },
+        {
+          "id": "slow_healing",
+          "question": "怪我が治りにくくなりましたか？",
+          "weight": 0.6,
+          "explanation": "血流悪化や免疫低下により修復が遅れます。"
+        },
+        {
+          "id": "numbness_extremities",
+          "question": "手足の先がしびれたり、ピリピリしたりしますか？",
+          "weight": 0.7,
+          "explanation": "神経障害は糖尿病の代表的な合併症です。"
+        },
+        {
+          "id": "lethargy",
+          "question": "いつも体がだるく、やる気が出ませんか？",
+          "weight": 0.6,
+          "explanation": "細胞がエネルギー不足の状態になっています。"
+        },
+        {
+          "id": "sweet_smelling_urine",
+          "question": "尿から甘い匂いがすることがありますか？",
+          "weight": 0.7,
+          "explanation": "糖やケトン体が尿中に排出されているサインです。"
+        },
+        {
+          "id": "itchy_skin",
+          "question": "皮膚が乾燥してかゆくなりやすいですか？",
+          "weight": 0.5,
+          "explanation": "水分不足や末梢神経の影響です。"
+        },
+        {
+          "id": "erectile_dysfunction",
+          "question": "（男性の場合）性機能の低下を感じますか？",
+          "weight": 0.5,
+          "explanation": "血流や神経の障害により起こり得ます。"
+        }
+      ]
+    },
+    {
+      "id": "bronchitis",
+      "name": "気管支炎",
+      "department": "内科",
+      "description": "気管支に炎症が起こり、咳や痰がひどくなる病気です。風邪が悪化してなることが多いです。",
+      "baseProbability": {
+        "male": 0.08,
+        "female": 0.08
+      },
+      "ageModifier": {
+        "0-10": 1.2,
+        "11-20": 0.8,
+        "21-40": 1.0,
+        "41-60": 1.1,
+        "61+": 1.3
+      },
+      "symptoms": [
+        {
+          "id": "persistent_cough",
+          "question": "咳が長引いていますか（2週間以上など）？",
+          "weight": 0.9,
+          "explanation": "気管支の炎症が続いているサインです。"
+        },
+        {
+          "id": "colored_phlegm",
+          "question": "黄色や緑色の痰が出ますか？",
+          "weight": 0.9,
+          "explanation": "細菌感染を伴う炎症の可能性があります。"
+        },
+        {
+          "id": "chest_discomfort",
+          "question": "咳をする時に胸のあたりが痛んだり苦しくなりますか？",
+          "weight": 0.8,
+          "explanation": "激しい咳による筋肉痛や炎症による痛みです。"
+        },
+        {
+          "id": "wheezing",
+          "question": "呼吸をする時に「ゼーゼー」「ヒューヒュー」という音がしますか？",
+          "weight": 0.8,
+          "explanation": "空気の通り道が狭くなっている証拠です。"
+        },
+        {
+          "id": "low_grade_fever_bronch",
+          "question": "37度台の熱が続いていますか？",
+          "weight": 0.6,
+          "explanation": "慢性的な炎症による発熱です。"
+        },
+        {
+          "id": "shortness_of_breath_exertion",
+          "question": "体を動かすとすぐに息が上がりますか？",
+          "weight": 0.7,
+          "explanation": "換気機能が一時的に低下しています。"
+        },
+        {
+          "id": "fatigue_bronch",
+          "question": "咳のせいで体力を消耗していますか？",
+          "weight": 0.6,
+          "explanation": "激しい咳は全身の倦怠感を招きます。"
+        },
+        {
+          "id": "nasal_congestion_bronch",
+          "question": "鼻水や鼻づまりがありますか？",
+          "weight": 0.4,
+          "explanation": "上気道の炎症を伴っている場合が多いです。"
+        },
+        {
+          "id": "night_cough",
+          "question": "夜間や明け方に咳がひどくなりますか？",
+          "weight": 0.7,
+          "explanation": "横になると気道が刺激されやすいためです。"
+        },
+        {
+          "id": "difficulty_expectorating",
+          "question": "痰を出したいが、なかなか出ないことがありますか？",
+          "weight": 0.6,
+          "explanation": "痰の粘り気が強くなっているサインです。"
+        }
+      ]
+    },
+    {
+      "id": "pneumonia",
+      "name": "肺炎",
+      "department": "内科",
+      "description": "肺の深い部分（肺胞）に炎症が起こる病気で、高齢者では命に関わることもあります。",
+      "baseProbability": {
+        "male": 0.05,
+        "female": 0.04
+      },
+      "ageModifier": {
+        "0-10": 1.1,
+        "11-20": 0.5,
+        "21-40": 0.7,
+        "41-60": 1.2,
+        "61+": 2.0
+      },
+      "symptoms": [
+        {
+          "id": "prolonged_high_fever",
+          "question": "高い熱が4日以上続いていますか？",
+          "weight": 1.0,
+          "explanation": "肺の深部の感染は解熱しにくいのが特徴です。"
+        },
+        {
+          "id": "severe_cough_pneu",
+          "question": "呼吸が困難なほど激しい咳が出ますか？",
+          "weight": 0.9,
+          "explanation": "肺胞の炎症により酸素取り込みが阻害されます。"
+        },
+        {
+          "id": "yellow_green_sputum",
+          "question": "粘り気の強い、濃い色の痰が出ますか？",
+          "weight": 0.8,
+          "explanation": "肺の中での激しい炎症反応を示しています。"
+        },
+        {
+          "id": "chest_pain_breath",
+          "question": "深く息を吸うと胸が痛みますか？",
+          "weight": 0.8,
+          "explanation": "肺を包む胸膜に炎症が及んでいる可能性があります。"
+        },
+        {
+          "id": "dyspnea",
+          "question": "安静にしていても息苦しさを感じますか？",
+          "weight": 1.0,
+          "explanation": "緊急性が高く、肺機能が低下しているサインです。"
+        },
+        {
+          "id": "shivering_chills",
+          "question": "全身が震えるような強い寒気がありますか？",
+          "weight": 0.7,
+          "explanation": "血流に毒素が入る際などの反応です。"
+        },
+        {
+          "id": "cyanosis_pale",
+          "question": "顔色が悪かったり、爪の色が紫っぽくなっていますか？",
+          "weight": 0.9,
+          "explanation": "チアノーゼと呼ばれ、深刻な酸素不足の状態です。"
+        },
+        {
+          "id": "confusion_elderly",
+          "question": "（高齢者の場合）意識がぼーっとしたり、つじつまの合わないことを言いますか？",
+          "weight": 0.8,
+          "explanation": "高齢者では熱が出ず、意識障害が先に出ることがあります。"
+        },
+        {
+          "id": "rapid_breathing",
+          "question": "呼吸の回数が異常に多い（肩で息をする）ですか？",
+          "weight": 0.9,
+          "explanation": "浅く速い呼吸で酸素不足を補おうとしています。"
+        },
+        {
+          "id": "appetite_extinction",
+          "question": "水分も取れないほどぐったりしていますか？",
+          "weight": 0.8,
+          "explanation": "全身状態が著しく悪化しているサインです。"
+        }
+      ]
+    },
+    {
+      "id": "cystitis",
+      "name": "膀胱炎",
+      "department": "泌尿器科（内科でも可）",
+      "description": "尿道から細菌が入り、膀胱の粘膜に炎症が起こる病気です。女性に多く見られます。",
+      "baseProbability": {
+        "male": 0.01,
+        "female": 0.2
+      },
+      "ageModifier": {
+        "0-10": 0.2,
+        "11-20": 1.0,
+        "21-40": 1.5,
+        "41-60": 1.3,
+        "61+": 1.2
+      },
+      "symptoms": [
+        {
+          "id": "urinary_frequency",
+          "question": "トイレの回数が非常に多い（頻尿）ですか？",
+          "weight": 1.0,
+          "explanation": "膀胱が過敏になり、少しの尿でも出したくなります。"
+        },
+        {
+          "id": "pain_on_urination",
+          "question": "尿を出す時に、ツーンとする痛みがありますか？",
+          "weight": 1.0,
+          "explanation": "炎症部分が尿に触れることで強い痛みが生じます。"
+        },
+        {
+          "id": "feeling_of_residual_urine",
+          "question": "出した後も「まだ出そう」な残尿感がありますか？",
+          "weight": 0.9,
+          "explanation": "膀胱の粘膜が炎症で過剰に刺激されている状態です。"
+        },
+        {
+          "id": "cloudy_urine",
+          "question": "尿が白く濁っていますか？",
+          "weight": 0.8,
+          "explanation": "細菌や白血球（膿）が混じっているためです。"
+        },
+        {
+          "id": "bloody_urine",
+          "question": "尿に血が混じることがありますか？",
+          "weight": 0.7,
+          "explanation": "炎症がひどく、粘膜から出血している状態です。"
+        },
+        {
+          "id": "lower_abdominal_discomfort",
+          "question": "下腹部（恥骨のあたり）に違和感や痛みがありますか？",
+          "weight": 0.7,
+          "explanation": "膀胱がある場所の鈍痛が特徴です。"
+        },
+        {
+          "id": "urgent_urination",
+          "question": "急に我慢できないほどの尿意に襲われますか？",
+          "weight": 0.8,
+          "explanation": "膀胱が勝手に収縮しようとする反応です。"
+        },
+        {
+          "id": "smelly_urine",
+          "question": "尿の臭いがいつもと違ってきついですか？",
+          "weight": 0.6,
+          "explanation": "細菌の繁殖による変化です。"
+        },
+        {
+          "id": "no_fever_cystitis",
+          "question": "熱はありませんか？",
+          "weight": 0.5,
+          "explanation": "通常の膀胱炎では高熱は出ません（あれば腎盂腎炎の疑い）。"
+        },
+        {
+          "id": "urinary_incontinence_leakage",
+          "question": "トイレまで間に合わず漏れてしまうことがありますか？",
+          "weight": 0.4,
+          "explanation": "炎症による切迫性尿失禁です。"
+        }
+      ]
+    },
+    {
+      "id": "sinusitis",
+      "name": "副鼻腔炎（蓄膿症）",
+      "department": "耳鼻科",
+      "description": "鼻の奥にある空洞（副鼻腔）に膿が溜まる病気です。風邪の後に起こりやすいです。",
+      "baseProbability": {
+        "male": 0.1,
+        "female": 0.1
+      },
+      "ageModifier": {
+        "0-10": 1.2,
+        "11-20": 1.0,
+        "21-40": 1.0,
+        "41-60": 0.9,
+        "61+": 0.8
+      },
+      "symptoms": [
+        {
+          "id": "thick_yellow_mucus",
+          "question": "ドロッとした黄色や緑色の鼻水が出ますか？",
+          "weight": 1.0,
+          "explanation": "副鼻腔に溜まった膿が排出されている証拠です。"
+        },
+        {
+          "id": "nasal_blockage_severe",
+          "question": "鼻が完全に詰まって、口呼吸になりますか？",
+          "weight": 0.9,
+          "explanation": "粘膜のはれと膿により空気の通り道が塞がれます。"
+        },
+        {
+          "id": "facial_pressure",
+          "question": "頬、目の間、または額のあたりが重い、痛いですか？",
+          "weight": 0.9,
+          "explanation": "膿が溜まっている場所（副鼻腔）が圧迫されています。"
+        },
+        {
+          "id": "postnasal_drip",
+          "question": "鼻水が喉の方へ流れてきますか？",
+          "weight": 0.8,
+          "explanation": "「後鼻漏」と呼ばれ、喉の違和感や咳の原因になります。"
+        },
+        {
+          "id": "loss_of_smell",
+          "question": "匂いが分かりにくくなりましたか？",
+          "weight": 0.7,
+          "explanation": "嗅覚細胞に匂いの粒子が届きにくくなっています。"
+        },
+        {
+          "id": "headache_frontal",
+          "question": "下を向くと頭痛や顔の痛みが増しますか？",
+          "weight": 0.8,
+          "explanation": "姿勢を変えることで膿が移動し、圧力が変わるためです。"
+        },
+        {
+          "id": "bad_breath_sinus",
+          "question": "自分や他人が感じる嫌な臭い（生臭いなど）が鼻にありますか？",
+          "weight": 0.7,
+          "explanation": "膿自体が放つ臭いです。"
+        },
+        {
+          "id": "toothache_sinus",
+          "question": "虫歯ではないのに、上の奥歯が痛むことがありますか？",
+          "weight": 0.6,
+          "explanation": "上顎洞の炎症が神経を介して歯の痛みとして感じられます。"
+        },
+        {
+          "id": "fever_sinus",
+          "question": "微熱が出ることがありますか？",
+          "weight": 0.4,
+          "explanation": "慢性的、または急性の炎症反応です。"
+        },
+        {
+          "id": "chronic_cough_throat",
+          "question": "喉がイガイガして、痰を切るような咳が出ますか？",
+          "weight": 0.6,
+          "explanation": "喉に落ちた鼻水が刺激になっています。"
+        }
+      ]
+    },
+    {
+      "id": "allergic_rhinitis",
+      "name": "アレルギー性鼻炎",
+      "department": "耳鼻科",
+      "description": "ハウスダストやダニなどに対して、鼻の粘膜が過剰に反応する病気です。一年中起こるのが特徴です。",
+      "baseProbability": {
+        "male": 0.2,
+        "female": 0.2
+      },
+      "ageModifier": {
+        "0-10": 1.2,
+        "11-20": 1.5,
+        "21-40": 1.2,
+        "41-60": 0.9,
+        "61+": 0.6
+      },
+      "symptoms": [
+        {
+          "id": "clear_watery_rhinorrhea",
+          "question": "水のようなサラサラした透明な鼻水が出ますか？",
+          "weight": 1.0,
+          "explanation": "アレルギー反応による典型的な鼻水の性質です。"
+        },
+        {
+          "id": "paroxysmal_sneezing",
+          "question": "くしゃみが連続して（3回以上など）出ますか？",
+          "weight": 0.9,
+          "explanation": "異物を追い出そうとする過剰な防衛反応です。"
+        },
+        {
+          "id": "nasal_itching",
+          "question": "鼻の中がかゆくてムズムズしますか？",
+          "weight": 0.9,
+          "explanation": "ヒスタミンという物質が神経を刺激しています。"
+        },
+        {
+          "id": "nasal_obstruction_swapping",
+          "question": "鼻詰まりが、左右交互に起こりますか？",
+          "weight": 0.7,
+          "explanation": "粘膜のはれが左右で入れ替わることがあります。"
+        },
+        {
+          "id": "itchy_eyes_allergy",
+          "question": "目も一緒にかゆくなりますか？",
+          "weight": 0.8,
+          "explanation": "鼻と目はつながっており、同時にアレルギー反応が出やすいです。"
+        },
+        {
+          "id": "dark_circles_under_eyes",
+          "question": "目の下にクマのような影（アレルギー性シャイナー）がありますか？",
+          "weight": 0.5,
+          "explanation": "鼻粘膜のうっ血により周囲の血流が悪くなるためです。"
+        },
+        {
+          "id": "symptoms_in_specific_places",
+          "question": "掃除の時や、布団に入ると症状が悪化しますか？",
+          "weight": 0.8,
+          "explanation": "アレルゲン（埃やダニ）に接触するタイミングで反応します。"
+        },
+        {
+          "id": "mouth_breathing_dry",
+          "question": "鼻が詰まって口が乾きやすいですか？",
+          "weight": 0.6,
+          "explanation": "慢性的な鼻閉による随伴症状です。"
+        },
+        {
+          "id": "dull_head_feeling",
+          "question": "頭がボーッとしたり、重く感じたりしますか？",
+          "weight": 0.6,
+          "explanation": "鼻呼吸が困難で脳の冷却や酸素供給に影響するためです。"
+        },
+        {
+          "id": "no_fever_allergy",
+          "question": "熱は全くありませんか？",
+          "weight": 0.7,
+          "explanation": "風邪と違い、アレルギー反応だけでは発熱しません。"
+        }
+      ]
+    },
+    {
+      "id": "sudden_deafness",
+      "name": "突発性難聴",
+      "department": "耳鼻科",
+      "description": "突然、片方の耳が聞こえなくなる病気です。早期治療が非常に重要で、放置すると治らなくなる恐れがあります。",
+      "baseProbability": {
+        "male": 0.02,
+        "female": 0.02
+      },
+      "ageModifier": {
+        "0-10": 0.1,
+        "11-20": 0.5,
+        "21-40": 1.2,
+        "41-60": 1.5,
+        "61+": 1.3
+      },
+      "symptoms": [
+        {
+          "id": "sudden_hearing_loss",
+          "question": "ある時、突然耳が聞こえなくなりましたか？",
+          "weight": 1.0,
+          "explanation": "「いつ」がはっきりしているのが最大の特徴です。"
+        },
+        {
+          "id": "one_sided_deafness",
+          "question": "聞こえないのは片方の耳だけですか？",
+          "weight": 0.9,
+          "explanation": "左右同時に起こることは稀です。"
+        },
+        {
+          "id": "ear_tinnitus_sudden",
+          "question": "耳鳴りが突然始まりましたか？",
+          "weight": 0.9,
+          "explanation": "難聴と同時に強い耳鳴りを伴うことが多いです。"
+        },
+        {
+          "id": "ear_fullness",
+          "question": "耳の中に水が入ったような、詰まった感じがしますか？",
+          "weight": 0.8,
+          "explanation": "耳閉感は難聴の初期症状としてよく見られます。"
+        },
+        {
+          "id": "vertigo_sudden",
+          "question": "めまいを伴いますか？",
+          "weight": 0.7,
+          "explanation": "内耳の機能障害が平衡感覚に及んでいるサインです。"
+        },
+        {
+          "id": "sound_distortion",
+          "question": "音が二重に聞こえたり、響いたりしますか？",
+          "weight": 0.7,
+          "explanation": "特定の周波数が聞こえにくいために起こる現象です。"
+        },
+        {
+          "id": "nausea_ear",
+          "question": "めまいに伴い、吐き気がすることがありますか？",
+          "weight": 0.5,
+          "explanation": "強いめまいによる自律神経への影響です。"
+        },
+        {
+          "id": "no_pain_deafness",
+          "question": "耳の痛みは全くありませんか？",
+          "weight": 0.6,
+          "explanation": "中耳炎と違い、通常は痛みを伴いません。"
+        },
+        {
+          "id": "hearing_loss_noticable",
+          "question": "電話の声が聞こえにくい、テレビの音が片方だけ小さく感じますか？",
+          "weight": 0.8,
+          "explanation": "日常生活での具体的な不自由さの確認です。"
+        },
+        {
+          "id": "stress_fatigue_trigger",
+          "question": "発症前に強いストレスや過労がありましたか？",
+          "weight": 0.7,
+          "explanation": "ストレスや疲れが引き金になると考えられています。"
+        }
+      ]
+    },
+    {
+      "id": "otitis_media",
+      "name": "急性中耳炎",
+      "department": "耳鼻科",
+      "description": "鼓膜の奥の中耳に細菌が入り、膿が溜まって痛む病気です。子どもに非常に多いです。",
+      "baseProbability": {
+        "male": 0.05,
+        "female": 0.05
+      },
+      "ageModifier": {
+        "0-10": 2.0,
+        "11-20": 0.5,
+        "21-40": 0.3,
+        "41-60": 0.2,
+        "61+": 0.2
+      },
+      "symptoms": [
+        {
+          "id": "severe_ear_pain",
+          "question": "耳に強い痛み（ズキズキする）がありますか？",
+          "weight": 1.0,
+          "explanation": "膿が溜まって鼓膜を内側から圧迫するため激痛が走ります。"
+        },
+        {
+          "id": "fever_ear",
+          "question": "熱がありますか？",
+          "weight": 0.8,
+          "explanation": "急性感染症であるため、高熱が出ることがあります。"
+        },
+        {
+          "id": "ear_discharge",
+          "question": "耳だれ（耳から液体が出る）がありますか？",
+          "weight": 0.9,
+          "explanation": "鼓膜が破れて中の膿が出てきている状態です。"
+        },
+        {
+          "id": "ear_stuffiness",
+          "question": "耳が詰まった感じや、聞こえにくさがありますか？",
+          "weight": 0.7,
+          "explanation": "中耳に液体が溜まっているために起こります。"
+        },
+        {
+          "id": "crying_baby",
+          "question": "（乳幼児の場合）不機嫌で、耳のあたりを触って泣き続けますか？",
+          "weight": 0.9,
+          "explanation": "言葉で伝えられない子どもの重要なサインです。"
+        },
+        {
+          "id": "preceding_cold",
+          "question": "鼻水や咳などの風邪症状が先にありましたか？",
+          "weight": 0.8,
+          "explanation": "風邪の菌が耳管を通って耳に入るのが一般的です。"
+        },
+        {
+          "id": "tinnitus_humming",
+          "question": "耳の中でボーッという音がしますか？",
+          "weight": 0.6,
+          "explanation": "中耳内の圧力が変わることで起こる耳鳴りです。"
+        },
+        {
+          "id": "headache_ear_side",
+          "question": "耳に近い側の頭が痛みますか？",
+          "weight": 0.5,
+          "explanation": "強い炎症が周囲へ波及しているサインです。"
+        },
+        {
+          "id": "temporary_hearing_loss",
+          "question": "自分の声がこもって聞こえますか？",
+          "weight": 0.7,
+          "explanation": "中耳の換気が悪くなっている状態です。"
+        },
+        {
+          "id": "appetite_loss_fever",
+          "question": "熱と痛みで食欲が落ちていますか？",
+          "weight": 0.5,
+          "explanation": "全身症状が悪化していることを示します。"
+        }
+      ]
+    },
+    {
+      "id": "tonsillitis",
+      "name": "扁桃炎（扁桃腺炎）",
+      "department": "耳鼻科（または内科）",
+      "description": "喉の奥にある扁桃（へんとう）が細菌やウイルスにより赤く腫れる病気です。唾を飲むのも辛くなります。",
+      "baseProbability": {
+        "male": 0.08,
+        "female": 0.08
+      },
+      "ageModifier": {
+        "0-10": 1.5,
+        "11-20": 1.2,
+        "21-40": 1.0,
+        "41-60": 0.7,
+        "61+": 0.5
+      },
+      "symptoms": [
+        {
+          "id": "severe_sore_throat",
+          "question": "喉が非常に強く痛み、唾を飲むのも辛いですか？",
+          "weight": 1.0,
+          "explanation": "扁桃の強い炎症による典型的な症状です。"
+        },
+        {
+          "id": "high_fever_tonsil",
+          "question": "38度〜39度以上の高熱が出ましたか？",
+          "weight": 0.9,
+          "explanation": "細菌性の場合、急激な高熱を伴うことが多いです。"
+        },
+        {
+          "id": "swollen_lymph_nodes",
+          "question": "首の付け根（リンパ節）が腫れて、触ると痛いですか？",
+          "weight": 0.9,
+          "explanation": "喉の炎症に反応してリンパ節が防御反応を示しています。"
+        },
+        {
+          "id": "white_spots_throat",
+          "question": "鏡で見ると、喉の奥に白いブツブツ（膿）がついていますか？",
+          "weight": 1.0,
+          "explanation": "扁桃に膿が付着している「白苔」は扁桃炎の特徴です。"
+        },
+        {
+          "id": "chills_tonsil",
+          "question": "寒気が強いですか？",
+          "weight": 0.7,
+          "explanation": "高熱が出る際の前兆症状です。"
+        },
+        {
+          "id": "headache_tonsil",
+          "question": "頭痛がありますか？",
+          "weight": 0.6,
+          "explanation": "高熱や全身の炎症に伴う症状です。"
+        },
+        {
+          "id": "ear_referred_pain",
+          "question": "喉が痛いのに、耳の奥まで痛む感じがしますか？",
+          "weight": 0.8,
+          "explanation": "放散痛と呼ばれ、喉の神経刺激が耳に伝わることがあります。"
+        },
+        {
+          "id": "bad_breath_tonsil",
+          "question": "口臭が気になりますか？",
+          "weight": 0.6,
+          "explanation": "扁桃の膿や炎症により口臭が発生しやすくなります。"
+        },
+        {
+          "id": "fatigue_tonsil",
+          "question": "全身がだるく、節々が痛みますか？",
+          "weight": 0.6,
+          "explanation": "強い炎症反応による全身倦怠感です。"
+        },
+        {
+          "id": "muffled_voice",
+          "question": "声がこもったり、話しにくかったりしますか？",
+          "weight": 0.7,
+          "explanation": "扁桃が腫れて空気の通り道が狭くなっているためです。"
+        }
+      ]
+    },
+    {
+      "id": "atopic_dermatitis",
+      "name": "アトピー性皮膚炎",
+      "department": "皮膚科",
+      "description": "かゆみのある湿疹が、良くなったり悪くなったりを繰り返す慢性的な皮膚の病気です。",
+      "baseProbability": {
+        "male": 0.1,
+        "female": 0.1
+      },
+      "ageModifier": {
+        "0-10": 2.0,
+        "11-20": 1.2,
+        "21-40": 1.0,
+        "41-60": 0.7,
+        "61+": 0.5
+      },
+      "symptoms": [
+        {
+          "id": "chronic_itching",
+          "question": "強いかゆみが長期間（半年以上）続いていますか？",
+          "weight": 1.0,
+          "explanation": "慢性的であることはアトピー診断の重要な基準です。"
+        },
+        {
+          "id": "symmetric_rash",
+          "question": "湿疹が体の左右同じような場所に出ていますか？",
+          "weight": 0.9,
+          "explanation": "左右対称性はアトピー性皮膚炎の特徴的なパターンです。"
+        },
+        {
+          "id": "flexural_rash",
+          "question": "肘や膝の内側（関節の曲がる部分）に湿疹がありますか？",
+          "weight": 1.0,
+          "explanation": "関節の内側はアトピーが出やすい好発部位です。"
+        },
+        {
+          "id": "dry_skin_atopic",
+          "question": "肌が全体的に乾燥してカサカサしていますか？",
+          "weight": 0.8,
+          "explanation": "バリア機能が低下している「ドライスキン」が基礎にあります。"
+        },
+        {
+          "id": "itchy_sleep_disturbance",
+          "question": "かゆみで夜眠れなかったり、起きたら掻き壊したりしていますか？",
+          "weight": 0.8,
+          "explanation": "重症度を判断する指標にもなります。"
+        },
+        {
+          "id": "family_history_allergy",
+          "question": "家族にアレルギー（喘息、鼻炎など）の人がいますか？",
+          "weight": 0.7,
+          "explanation": "遺伝的な要因（アトピー素因）が関与します。"
+        },
+        {
+          "id": "face_neck_rash",
+          "question": "顔や首の周りに赤みや湿疹が出やすいですか？",
+          "weight": 0.8,
+          "explanation": "露出部や擦れやすい場所に出るのが特徴です。"
+        },
+        {
+          "id": "thickened_skin",
+          "question": "湿疹の部分がゴワゴワして厚くなっていますか？",
+          "weight": 0.7,
+          "explanation": "慢性的に掻くことで皮膚が厚くなる「苔癬化」の状態です。"
+        },
+        {
+          "id": "sweat_irritation",
+          "question": "汗をかくと特にかゆみが強くなりますか？",
+          "weight": 0.8,
+          "explanation": "汗の成分がバリアの壊れた皮膚を刺激するためです。"
+        },
+        {
+          "id": "seasonal_variation",
+          "question": "季節の変わり目に症状が悪化しますか？",
+          "weight": 0.6,
+          "explanation": "気温や湿度の変化が肌のストレスになります。"
+        }
+      ]
+    },
+    {
+      "id": "urticaria",
+      "name": "蕁麻疹（じんましん）",
+      "department": "皮膚科",
+      "description": "皮膚が突然赤く盛り上がり（膨疹）、激しいかゆみを伴う病気です。数時間で消えることが多いです。",
+      "baseProbability": {
+        "male": 0.1,
+        "female": 0.15
+      },
+      "ageModifier": {
+        "0-10": 1.1,
+        "11-20": 1.0,
+        "21-40": 1.2,
+        "41-60": 1.0,
+        "61+": 0.8
+      },
+      "symptoms": [
+        {
+          "id": "wheals_fleeting",
+          "question": "蚊に刺されたような赤い腫れが出て、数時間で消えますか？",
+          "weight": 1.0,
+          "explanation": "「跡形もなく消える」のが蕁麻疹の最大の特徴です。"
+        },
+        {
+          "id": "intense_itching_hives",
+          "question": "我慢できないほど強いかゆみがありますか？",
+          "weight": 0.9,
+          "explanation": "ヒスタミンの放出により激しいかゆみが生じます。"
+        },
+        {
+          "id": "moving_rash",
+          "question": "さっきまであった場所の腫れが消え、別の場所に出てきますか？",
+          "weight": 0.9,
+          "explanation": "症状が移動するように見えるのも特徴的です。"
+        },
+        {
+          "id": "burning_sensation_skin",
+          "question": "かゆみだけでなく、チクチクしたり熱い感じがしたりしますか？",
+          "weight": 0.6,
+          "explanation": "炎症反応による感覚刺激です。"
+        },
+        {
+          "id": "swelling_eyelids_lips",
+          "question": "まぶたやくちびるがパンパンに腫れることがありますか？",
+          "weight": 0.7,
+          "explanation": "「クインケ浮腫」と呼ばれる、深い部分のむくみを伴うことがあります。"
+        },
+        {
+          "id": "trigger_food_medicine",
+          "question": "特定の食べ物や薬を飲んだ後に症状が出ましたか？",
+          "weight": 0.8,
+          "explanation": "アレルギー性の原因を探る重要な質問です。"
+        },
+        {
+          "id": "trigger_stress_fatigue",
+          "question": "疲れやストレスが溜まっている時に出やすいですか？",
+          "weight": 0.7,
+          "explanation": "非アレルギー性（特発性）の多くはストレスが関与します。"
+        },
+        {
+          "id": "trigger_physical_stimulus",
+          "question": "皮膚を引っ掻いたり、冷やしたり温めたりすると出ますか？",
+          "weight": 0.7,
+          "explanation": "物理的な刺激による刺激性蕁麻疹の確認です。"
+        },
+        {
+          "id": "night_flare_up",
+          "question": "夜にお風呂に入ったり寝ようとすると悪化しますか？",
+          "weight": 0.7,
+          "explanation": "体が温まったり、副交感神経が優位になると出やすくなります。"
+        },
+        {
+          "id": "no_rash_marks",
+          "question": "湿疹が消えた後は、全く元通りになりますか？",
+          "weight": 0.9,
+          "explanation": "色素沈着や跡が残らないのが蕁麻疹の特徴です。"
+        }
+      ]
+    },
+    {
+      "id": "herpes_zoster",
+      "name": "帯状疱疹",
+      "department": "皮膚科",
+      "description": "子どもの時の水ぼうそうウイルスが再活性化し、神経に沿って水ぶくれができる痛い病気です。",
+      "baseProbability": {
+        "male": 0.03,
+        "female": 0.04
+      },
+      "ageModifier": {
+        "0-10": 0.1,
+        "11-20": 0.3,
+        "21-40": 0.8,
+        "41-60": 1.5,
+        "61+": 2.0
+      },
+      "symptoms": [
+        {
+          "id": "one_sided_rash",
+          "question": "体の左右どちらか片側だけに湿疹が出ていますか？",
+          "weight": 1.0,
+          "explanation": "神経に沿って出るため、正中線を越えないのが最大の特徴です。"
+        },
+        {
+          "id": "neuralgia_preceding",
+          "question": "湿疹が出る数日前から、その場所に痛みがありましたか？",
+          "weight": 0.9,
+          "explanation": "神経の中でウイルスが増える際の予兆症状です。"
+        },
+        {
+          "id": "stinging_pain",
+          "question": "刺すような、ピリピリ・ズキズキとした強い痛みがありますか？",
+          "weight": 1.0,
+          "explanation": "神経の炎症による独特な痛みです。"
+        },
+        {
+          "id": "vesicles_cluster",
+          "question": "小さな水ぶくれ（水疱）が集まってできていますか？",
+          "weight": 0.9,
+          "explanation": "帯状に並んだ水ぶくれは帯状疱疹の典型像です。"
+        },
+        {
+          "id": "rash_along_nerve",
+          "question": "湿疹が帯状（ベルト状）に並んでいますか？",
+          "weight": 1.0,
+          "explanation": "名前の由来にもなっている重要な所見です。"
+        },
+        {
+          "id": "fever_mild_shingles",
+          "question": "微熱が出たり、体がだるかったりしますか？",
+          "weight": 0.5,
+          "explanation": "ウイルスの再活性化による全身反応です。"
+        },
+        {
+          "id": "lymph_node_swelling_local",
+          "question": "湿疹が出ている場所の近くのリンパ節が腫れていますか？",
+          "weight": 0.6,
+          "explanation": "局所の炎症にリンパ節が反応します。"
+        },
+        {
+          "id": "pain_touching",
+          "question": "服が擦れるだけでも痛みますか？",
+          "weight": 0.8,
+          "explanation": "アロディニアと呼ばれ、神経が過敏になっている状態です。"
+        },
+        {
+          "id": "stress_fatigue_history",
+          "question": "最近、ひどく疲れていたり大きなストレスがありましたか？",
+          "weight": 0.7,
+          "explanation": "免疫力が低下した隙にウイルスが暴れ出します。"
+        },
+        {
+          "id": "crusting",
+          "question": "数日経って、水ぶくれが黒っぽい「かさぶた」になってきましたか？",
+          "weight": 0.7,
+          "explanation": "治癒の経過における変化です。"
+        }
+      ]
+    },
+    {
+      "id": "athletes_foot",
+      "name": "水虫（足白癬）",
+      "department": "皮膚科",
+      "description": "白癬菌というカビが足の皮膚に寄生して起こる病気です。梅雨から夏にかけて悪化しやすいです。",
+      "baseProbability": {
+        "male": 0.2,
+        "female": 0.1
+      },
+      "ageModifier": {
+        "0-10": 0.1,
+        "11-20": 0.5,
+        "21-40": 1.2,
+        "41-60": 1.5,
+        "61+": 1.5
+      },
+      "symptoms": [
+        {
+          "id": "toe_web_rash",
+          "question": "指の間（特に薬指と小指の間）がふやけたり、皮が剥けたりしていますか？",
+          "weight": 1.0,
+          "explanation": "「趾間型」と呼ばれる、最も多いタイプの特徴です。"
+        },
+        {
+          "id": "itchy_feet_intermittent",
+          "question": "足がかゆいですか？（特にお風呂上がりなど）",
+          "weight": 0.8,
+          "explanation": "温まるとかゆみが増すのが一般的です。"
+        },
+        {
+          "id": "small_blisters_sole",
+          "question": "土踏まずや足の縁に、小さな水ぶくれができますか？",
+          "weight": 0.9,
+          "explanation": "「小水疱型」の特徴です。"
+        },
+        {
+          "id": "sole_thickening",
+          "question": "足の裏の皮が厚くなり、粉を吹いたようになりますか？",
+          "weight": 0.9,
+          "explanation": "「角質増殖型」の特徴で、かゆみがないことも多いです。"
+        },
+        {
+          "id": "cracked_heel",
+          "question": "かかとがひび割れて痛むことがありますか？",
+          "weight": 0.7,
+          "explanation": "角質増殖型の水虫を見逃している可能性があります。"
+        },
+        {
+          "id": "foul_odor_feet",
+          "question": "足の臭いが非常にきついですか？",
+          "weight": 0.6,
+          "explanation": "菌の繁殖や、併発する細菌の影響です。"
+        },
+        {
+          "id": "thick_cloudy_nails",
+          "question": "足の爪が厚くなったり、白く濁ったりしていますか？",
+          "weight": 0.8,
+          "explanation": "爪水虫（爪白癬）を合併しているサインです。"
+        },
+        {
+          "id": "symptoms_summer_bad",
+          "question": "夏にひどくなり、冬は落ち着きますか？",
+          "weight": 0.7,
+          "explanation": "カビ（菌）は高温多湿を好むためです。"
+        },
+        {
+          "id": "family_member_athlete_foot",
+          "question": "家族に水虫の人がいますか？",
+          "weight": 0.7,
+          "explanation": "バスマットやスリッパを通じて感染する家庭内感染が多いです。"
+        },
+        {
+          "id": "peeling_skin_feet",
+          "question": "足の指の付け根あたりの皮がむけますか？",
+          "weight": 0.6,
+          "explanation": "白癬菌による皮膚の破壊です。"
+        }
+      ]
+    },
+    {
+      "id": "lumbar_hernia",
+      "name": "腰椎椎間板ヘルニア",
+      "department": "整形外科",
+      "description": "腰の骨の間にあるクッション（椎間板）が飛び出し、神経を圧迫して痛みやしびれが出る病気です。",
+      "baseProbability": {
+        "male": 0.05,
+        "female": 0.03
+      },
+      "ageModifier": {
+        "0-10": 0.1,
+        "11-20": 0.8,
+        "21-40": 1.5,
+        "41-60": 1.2,
+        "61+": 0.8
+      },
+      "symptoms": [
+        {
+          "id": "back_pain_severe",
+          "question": "激しい腰痛がありますか？",
+          "weight": 0.8,
+          "explanation": "脊椎の構造異常による痛みです。"
+        },
+        {
+          "id": "sciatica_pain",
+          "question": "お尻から足にかけて、電気が走るような痛みやしびれがありますか？",
+          "weight": 1.0,
+          "explanation": "座骨神経への圧迫を示す「坐骨神経痛」の典型症状です。"
+        },
+        {
+          "id": "one_sided_leg_symptom",
+          "question": "痛みやしびれは、片方の足だけですか？",
+          "weight": 0.9,
+          "explanation": "ヘルニアは通常、片側の神経を圧迫します。"
+        },
+        {
+          "id": "numbness_foot",
+          "question": "足の感覚が鈍かったり、しびれたりしますか？",
+          "weight": 0.8,
+          "explanation": "神経の伝達障害が起きているサインです。"
+        },
+        {
+          "id": "pain_worse_bending",
+          "question": "前かがみになると痛みが増しますか？",
+          "weight": 0.9,
+          "explanation": "前屈姿勢は椎間板への圧力を高め、ヘルニアを押し出すためです。"
+        },
+        {
+          "id": "pain_worse_sitting",
+          "question": "椅子に座り続けるのが辛いですか？",
+          "weight": 0.8,
+          "explanation": "着座姿勢は腰への負担が大きいためです。"
+        },
+        {
+          "id": "slr_test_positive",
+          "question": "仰向けで寝て足を伸ばしたまま上げると、足に痛みが走りますか？",
+          "weight": 1.0,
+          "explanation": "SLRテストと呼ばれ、神経根が刺激されるかを見る重要な指標です。"
+        },
+        {
+          "id": "muscle_weakness_leg",
+          "question": "足に力が入りにくい、またはつま先立ちや踵立ちができませんか？",
+          "weight": 0.8,
+          "explanation": "運動神経が圧迫されている深刻なサインです。"
+        },
+        {
+          "id": "cough_sneeze_pain",
+          "question": "くしゃみや咳をすると、腰や足に響きますか？",
+          "weight": 0.8,
+          "explanation": "一瞬の圧力上昇が神経に響きます。"
+        },
+        {
+          "id": "bowel_bladder_dysfunction",
+          "question": "尿や便の感覚が分かりにくい、または漏れることがありますか？",
+          "weight": 1.0,
+          "explanation": "「馬尾症候群」の疑いがあり、緊急手術を要する重大な症状です。"
+        }
+      ]
+    },
+    {
+      "id": "knee_osteoarthritis",
+      "name": "変形性膝関節症",
+      "department": "整形外科",
+      "description": "加齢とともに膝の軟骨がすり減り、膝が変形して痛む病気です。高齢の女性に多いです。",
+      "baseProbability": {
+        "male": 0.05,
+        "female": 0.15
+      },
+      "ageModifier": {
+        "0-10": 0.0,
+        "11-20": 0.1,
+        "21-40": 0.5,
+        "41-60": 1.5,
+        "61+": 2.5
+      },
+      "symptoms": [
+        {
+          "id": "knee_pain_start_moving",
+          "question": "立ち上がる時や、歩き始めに膝が痛みますか？",
+          "weight": 1.0,
+          "explanation": "動作の開始時に痛むのがこの病気の最大の特徴です。"
+        },
+        {
+          "id": "knee_pain_stair_descent",
+          "question": "階段の昇り降り、特に「降りる」時に膝が痛みますか？",
+          "weight": 0.9,
+          "explanation": "降りる動作は膝に数倍の負荷がかかるため、痛みが顕著に出ます。"
+        },
+        {
+          "id": "knee_stiffness_morning",
+          "question": "朝、膝がこわばって動かしにくい感じがしますか？",
+          "weight": 0.8,
+          "explanation": "関節液の循環が悪い朝に不快感が出やすいです。"
+        },
+        {
+          "id": "knee_swelling_fluid",
+          "question": "膝が腫れたり、水が溜まったりしたことがありますか？",
+          "weight": 0.9,
+          "explanation": "炎症が起きると関節液（水）が過剰に分泌されます。"
+        },
+        {
+          "id": "knee_bow_leg",
+          "question": "膝が外側に開き、O脚になってきましたか？",
+          "weight": 0.8,
+          "explanation": "内側の軟骨が減ることで、足の形が変形していきます。"
+        },
+        {
+          "id": "knee_crepitus",
+          "question": "膝を曲げ伸ばしすると「パキパキ」「ゴリゴリ」音がしますか？",
+          "weight": 0.7,
+          "explanation": "軟骨が減り、骨同士が擦れ合っている音です。"
+        },
+        {
+          "id": "knee_cannot_squat",
+          "question": "正座ができませんか？",
+          "weight": 0.8,
+          "explanation": "深く曲げる動作は関節に強い負担と痛みを与えます。"
+        },
+        {
+          "id": "rest_pain_relief",
+          "question": "しばらく休んでいると、痛みは和らぎますか？",
+          "weight": 0.7,
+          "explanation": "安静にすれば炎症の刺激が落ち着くためです。"
+        },
+        {
+          "id": "weather_knee_pain",
+          "question": "雨の日や寒い日に膝の痛みが強くなりますか？",
+          "weight": 0.6,
+          "explanation": "気圧や気温の変化が血流や痛みへの感度に影響します。"
+        },
+        {
+          "id": "knee_instability",
+          "question": "膝がガクッとしたり、力が入らないことがありますか？",
+          "weight": 0.6,
+          "explanation": "痛みによる筋肉の抑制や関節の不安定さから起こります。"
+        }
+      ]
+    },
+    {
+      "id": "stiff_shoulder",
+      "name": "肩こり（頸肩腕症候群）",
+      "department": "整形外科",
+      "description": "肩や首の筋肉が緊張して血行が悪くなり、重苦しさや痛みを感じる状態です。現代病の一つです。",
+      "baseProbability": {
+        "male": 0.2,
+        "female": 0.3
+      },
+      "ageModifier": {
+        "0-10": 0.2,
+        "11-20": 0.8,
+        "21-40": 1.5,
+        "41-60": 1.2,
+        "61+": 1.0
+      },
+      "symptoms": [
+        {
+          "id": "shoulder_heaviness",
+          "question": "肩や首のあたりが重く、張った感じがしますか？",
+          "weight": 1.0,
+          "explanation": "筋肉の持続的な緊張による典型的な自覚症状です。"
+        },
+        {
+          "id": "neck_pain_limited_range",
+          "question": "首を回すと痛みがあったり、可動範囲が狭いですか？",
+          "weight": 0.8,
+          "explanation": "周囲の筋肉（僧帽筋など）が硬直しているサインです。"
+        },
+        {
+          "id": "tension_headache_shoulder",
+          "question": "肩こりがひどくなると、後頭部あたりが痛みますか？",
+          "weight": 0.8,
+          "explanation": "緊張型頭痛を併発しやすいためです。"
+        },
+        {
+          "id": "arm_fatigue",
+          "question": "腕がだるかったり、疲れやすかったりしますか？",
+          "weight": 0.6,
+          "explanation": "肩から腕への血流不足や神経への刺激が影響します。"
+        },
+        {
+          "id": "eye_strain_shoulder",
+          "question": "目の疲れ（眼精疲労）を感じることが多いですか？",
+          "weight": 0.7,
+          "explanation": "目の酷使は首や肩の筋肉の緊張を誘発します。"
+        },
+        {
+          "id": "posture_deskwork",
+          "question": "長時間のデスクワークやスマホ操作をしますか？",
+          "weight": 0.9,
+          "explanation": "不自然な姿勢の維持が最大の原因の一つです。"
+        },
+        {
+          "id": "shoulder_massage_relief",
+          "question": "マッサージをすると一時的に楽になりますか？",
+          "weight": 0.6,
+          "explanation": "血流の改善により老廃物が流れるためです。"
+        },
+        {
+          "id": "stress_shoulder_tension",
+          "question": "ストレスを感じると、余計に肩に力が入りませんか？",
+          "weight": 0.7,
+          "explanation": "精神的な緊張は無意識に肩を持ち上げる筋肉を緊張させます。"
+        },
+        {
+          "id": "back_stiffness",
+          "question": "背中（肩甲骨の間）にもコリや痛みを感じますか？",
+          "weight": 0.7,
+          "explanation": "肩こりは背中の筋肉まで波及することが一般的です。"
+        },
+        {
+          "id": "cold_sensitivity_shoulder",
+          "question": "冷房などで肩を冷やすと、症状が悪化しますか？",
+          "weight": 0.6,
+          "explanation": "冷えは血管を収縮させ、筋肉をさらに硬くします。"
+        }
+      ]
+    },
+    {
+      "id": "tenosynovitis",
+      "name": "腱鞘炎",
+      "department": "整形外科",
+      "description": "指や手首の使いすぎで、腱を包む「腱鞘（けんしょう）」が炎症を起こして痛む病気です。",
+      "baseProbability": {
+        "male": 0.05,
+        "female": 0.12
+      },
+      "ageModifier": {
+        "0-10": 0.1,
+        "11-20": 0.8,
+        "21-40": 1.2,
+        "41-60": 1.5,
+        "61+": 1.0
+      },
+      "symptoms": [
+        {
+          "id": "thumb_wrist_pain",
+          "question": "親指を動かしたり、手首を小指側に曲げると痛みますか？",
+          "weight": 1.0,
+          "explanation": "ド・ケルバン病と呼ばれる、親指の付け根の腱鞘炎の典型的な兆候です。"
+        },
+        {
+          "id": "trigger_finger",
+          "question": "指を曲げ伸ばしする時に、カクンと引っかかる感じ（ばね現象）がありますか？",
+          "weight": 1.0,
+          "explanation": "「ばね指」と呼ばれる、指の腱鞘炎の代表的な症状です。"
+        },
+        {
+          "id": "localized_swelling_wrist",
+          "question": "手首や指の付け根が腫れたり、熱を持ったりしていますか？",
+          "weight": 0.8,
+          "explanation": "炎症により局所の血流が増え、腫れが生じます。"
+        },
+        {
+          "id": "pain_on_wringing",
+          "question": "雑巾を絞ったり、ドアノブを回す動作で痛みますか？",
+          "weight": 0.9,
+          "explanation": "腱が腱鞘の中を動く際に強い摩擦と痛みが起こります。"
+        },
+        {
+          "id": "morning_stiffness_finger",
+          "question": "朝起きた時、指が曲がったまま伸びにくいですか？",
+          "weight": 0.8,
+          "explanation": "朝方は炎症によるむくみが強く、引っかかりが顕著になります。"
+        },
+        {
+          "id": "overuse_hand",
+          "question": "パソコン仕事、楽器、家事などで手を酷使していますか？",
+          "weight": 0.9,
+          "explanation": "使いすぎが最大の原因です。"
+        },
+        {
+          "id": "hormonal_trigger",
+          "question": "（女性の場合）妊娠・出産期、または更年期ですか？",
+          "weight": 0.7,
+          "explanation": "ホルモンバランスの変化で腱鞘がむくみやすくなる時期です。"
+        },
+        {
+          "id": "tenderness_tendon",
+          "question": "痛む場所をピンポイントで押すと激痛がありますか？",
+          "weight": 0.8,
+          "explanation": "炎症部位への直接圧迫は強い痛み（圧痛）を伴います。"
+        },
+        {
+          "id": "limited_finger_range",
+          "question": "痛みで指をしっかり握り込めませんか？",
+          "weight": 0.6,
+          "explanation": "痛みへの恐怖や物理的な引っかかりによる可動域制限です。"
+        },
+        {
+          "id": "chronic_dull_pain",
+          "question": "使っていない時も、ジンジンとした鈍痛がありますか？",
+          "weight": 0.5,
+          "explanation": "炎症が慢性化または重症化している可能性があります。"
+        }
+      ]
+    },
+    {
+      "id": "conjunctivitis",
+      "name": "結膜炎",
+      "department": "眼科",
+      "description": "白目の表面を覆う結膜が炎症を起こす病気です。細菌、ウイルス、アレルギーなど原因は様々です。",
+      "baseProbability": {
+        "male": 0.1,
+        "female": 0.1
+      },
+      "ageModifier": {
+        "0-10": 1.5,
+        "11-20": 1.0,
+        "21-40": 0.8,
+        "41-60": 0.7,
+        "61+": 0.7
+      },
+      "symptoms": [
+        {
+          "id": "red_eyes",
+          "question": "白目が赤く充血していますか？",
+          "weight": 1.0,
+          "explanation": "炎症により血管が拡張している状態です。"
+        },
+        {
+          "id": "eye_discharge",
+          "question": "目やに（眼脂）がたくさん出ますか？",
+          "weight": 0.9,
+          "explanation": "感染や炎症に対する排出物です。"
+        },
+        {
+          "id": "itchy_eyes_conj",
+          "question": "目がムズムズとかゆいですか？",
+          "weight": 0.8,
+          "explanation": "特にアレルギー性結膜炎で強く出ます。"
+        },
+        {
+          "id": "foreign_body_sensation",
+          "question": "目の中にゴミが入っているようなゴロゴロした感じがありますか？",
+          "weight": 0.8,
+          "explanation": "結膜の表面が荒れている、または腫れているためです。"
+        },
+        {
+          "id": "watery_eyes",
+          "question": "涙が止まらなかったり、ウルウルしたりしますか？",
+          "weight": 0.7,
+          "explanation": "刺激に対する防御反応として涙が増えます。"
+        },
+        {
+          "id": "swollen_eyelids",
+          "question": "まぶたが腫れていますか？",
+          "weight": 0.7,
+          "explanation": "周囲の組織まで炎症が及んでいるサインです。"
+        },
+        {
+          "id": "light_sensitivity",
+          "question": "光をまぶしく感じたり、目が開けにくいですか？",
+          "weight": 0.6,
+          "explanation": "炎症による過敏状態です。"
+        },
+        {
+          "id": "contagious_contacts",
+          "question": "家族や周りに、同じように目が赤い人がいますか？",
+          "weight": 0.8,
+          "explanation": "「はやり目（ウイルス性）」の強い感染性を疑う指標です。"
+        },
+        {
+          "id": "yellow_sticky_discharge",
+          "question": "粘り気のある黄色っぽい目やにが出ますか？",
+          "weight": 0.7,
+          "explanation": "細菌感染の可能性が高いサインです。"
+        },
+        {
+          "id": "swollen_preauricular_lymph",
+          "question": "耳の前のリンパ節が腫れて痛みますか？",
+          "weight": 0.8,
+          "explanation": "流行性角結膜炎（はやり目）で見られる特徴的な症状です。"
+        }
+      ]
+    },
+    {
+      "id": "dry_eye",
+      "name": "ドライアイ",
+      "department": "眼科",
+      "description": "涙の量が減ったり質が変わったりして、目の表面が乾燥し、傷つきやすくなる病気です。",
+      "baseProbability": {
+        "male": 0.1,
+        "female": 0.2
+      },
+      "ageModifier": {
+        "0-10": 0.1,
+        "11-20": 0.8,
+        "21-40": 1.2,
+        "41-60": 1.5,
+        "61+": 1.8
+      },
+      "symptoms": [
+        {
+          "id": "eye_fatigue_dry",
+          "question": "目が疲れやすい（眼精疲労）ですか？",
+          "weight": 0.9,
+          "explanation": "表面が乾くことでピント調整などに負担がかかります。"
+        },
+        {
+          "id": "dry_sensation_eye",
+          "question": "目が乾いている感じがしますか？",
+          "weight": 1.0,
+          "explanation": "最も直接的な自覚症状です。"
+        },
+        {
+          "id": "heavy_eyelids",
+          "question": "目が重たい、または開けているのが辛いですか？",
+          "weight": 0.8,
+          "explanation": "潤い不足によりまぶたとの摩擦が増えるためです。"
+        },
+        {
+          "id": "blurred_vision_intermittent",
+          "question": "時々、物がかすんで見えますか？",
+          "weight": 0.7,
+          "explanation": "涙の層が不安定だと、光の屈折が乱れます。"
+        },
+        {
+          "id": "burning_stinging_eye",
+          "question": "目がヒリヒリ・チクチク痛むことがありますか？",
+          "weight": 0.8,
+          "explanation": "乾燥により角膜の神経が刺激されています。"
+        },
+        {
+          "id": "reflex_tearing",
+          "question": "風に当たると、逆になぜか涙がボロボロ出ますか？",
+          "weight": 0.8,
+          "explanation": "「反射性涙液分泌」と言い、乾燥刺激への過剰反応です。"
+        },
+        {
+          "id": "eye_redness_mild",
+          "question": "夕方になると目が充血しやすいですか？",
+          "weight": 0.7,
+          "explanation": "一日の目の酷使と乾燥の蓄積によるものです。"
+        },
+        {
+          "id": "vdt_work",
+          "question": "パソコンやスマホを1日長時間使いますか？",
+          "weight": 0.9,
+          "explanation": "集中するとまばたきが減り、乾燥が加速します。"
+        },
+        {
+          "id": "contact_lens_discomfort",
+          "question": "コンタクトレンズをつけるとゴロゴロして辛いですか？",
+          "weight": 0.8,
+          "explanation": "レンズが涙を吸収し、さらに乾燥を悪化させます。"
+        },
+        {
+          "id": "morning_eye_opening",
+          "question": "朝起きたとき、目がくっついて開きにくいですか？",
+          "weight": 0.6,
+          "explanation": "睡眠中の涙の分泌不足が原因です。"
+        }
+      ]
+    },
+    {
+      "id": "stye",
+      "name": "ものもらい（麦粒腫）",
+      "department": "眼科",
+      "description": "まぶたの脂の腺に細菌が入り、赤く腫れて痛む病気です。地域によって「めばちこ」などとも呼ばれます。",
+      "baseProbability": {
+        "male": 0.05,
+        "female": 0.05
+      },
+      "ageModifier": {
+        "0-10": 1.2,
+        "11-20": 1.1,
+        "21-40": 1.0,
+        "41-60": 0.8,
+        "61+": 0.7
+      },
+      "symptoms": [
+        {
+          "id": "eyelid_localized_swelling",
+          "question": "まぶたの一部がポコッと赤く腫れていますか？",
+          "weight": 1.0,
+          "explanation": "局所的な炎症が外から見て分かります。"
+        },
+        {
+          "id": "pain_blinking",
+          "question": "まばたきをすると痛みますか？",
+          "weight": 0.9,
+          "explanation": "腫れている部分が擦れるために痛みが生じます。"
+        },
+        {
+          "id": "eyelid_tenderness",
+          "question": "腫れている部分を押すと痛いですか？",
+          "weight": 1.0,
+          "explanation": "細菌感染による急性炎症（圧痛）の特徴です。"
+        },
+        {
+          "id": "itchy_eyelid_edge",
+          "question": "まぶたの縁がかゆい、または熱っぽいですか？",
+          "weight": 0.7,
+          "explanation": "炎症の初期段階で感じることが多いです。"
+        },
+        {
+          "id": "white_head_eyelid",
+          "question": "腫れの中に、白い点（膿の出口）が見えますか？",
+          "weight": 0.9,
+          "explanation": "膿が溜まっている明確なサインです。"
+        },
+        {
+          "id": "foreign_body_under_lid",
+          "question": "まぶたの裏に何か入っているような違和感がありますか？",
+          "weight": 0.8,
+          "explanation": "まぶたの内側に炎症が起きている場合（内麦粒腫）に感じます。"
+        },
+        {
+          "id": "eye_discharge_morning",
+          "question": "朝、目が開かないほど目やにが出ますか？",
+          "weight": 0.6,
+          "explanation": "感染による分泌物が増えている状態です。"
+        },
+        {
+          "id": "bloodshot_around_swelling",
+          "question": "腫れている近くの白目が充血していますか？",
+          "weight": 0.6,
+          "explanation": "局所の炎症が波及しているためです。"
+        },
+        {
+          "id": "multiple_styes",
+          "question": "同じ場所や別の場所に、繰り返しできますか？",
+          "weight": 0.5,
+          "explanation": "体質や不潔な手で触る習慣が関係します。"
+        },
+        {
+          "id": "no_vision_change_stye",
+          "question": "視力そのものは変わっていませんか？",
+          "weight": 0.7,
+          "explanation": "通常、視力には影響しない病気です。"
+        }
+      ]
+    },
+    {
+      "id": "depression",
+      "name": "うつ病",
+      "department": "精神科・心療内科",
+      "description": "気分が強く落ち込み、何事にも意欲がわかなくなる心の病気です。脳のエネルギーが不足した状態です。",
+      "baseProbability": {
+        "male": 0.05,
+        "female": 0.1
+      },
+      "ageModifier": {
+        "0-10": 0.1,
+        "11-20": 0.8,
+        "21-40": 1.5,
+        "41-60": 1.3,
+        "61+": 1.0
+      },
+      "symptoms": [
+        {
+          "id": "depressed_mood",
+          "question": "気分がひどく落ち込み、何をしていても悲しい、虚しいと感じますか？",
+          "weight": 1.0,
+          "explanation": "抑うつ気分は診断の最も核心的な症状です。"
+        },
+        {
+          "id": "anhedonia",
+          "question": "以前は楽しかったことが、全く楽しいと感じられなくなりましたか？",
+          "weight": 1.0,
+          "explanation": "「興味・喜びの喪失」は重要な指標です。"
+        },
+        {
+          "id": "insomnia_early_awakening",
+          "question": "眠れない、または朝早くに目が覚めてしまいますか？",
+          "weight": 0.9,
+          "explanation": "睡眠障害、特に早朝覚醒はうつ病に典型的です。"
+        },
+        {
+          "id": "appetite_change_depression",
+          "question": "食欲が著しく落ちた、または逆に過食気味ですか？",
+          "weight": 0.8,
+          "explanation": "生命を維持する基本的欲求に変化が出ます。"
+        },
+        {
+          "id": "fatigue_no_energy",
+          "question": "体が重くて鉛のようで、やる気が全く起きませんか？",
+          "weight": 0.9,
+          "explanation": "精神・身体両面のエネルギー枯渇状態です。"
+        },
+        {
+          "id": "feelings_of_worthlessness",
+          "question": "自分はダメな人間だ、価値がない、申し訳ないなどと強く自分を責めますか？",
+          "weight": 0.8,
+          "explanation": "自責感や無価値観が強まります。"
+        },
+        {
+          "id": "concentration_difficulty",
+          "question": "集中力が落ち、本を読んだり決断したりすることが難しいですか？",
+          "weight": 0.8,
+          "explanation": "思考力や決断力の低下が仕事や私生活に支障をきたします。"
+        },
+        {
+          "id": "psychomotor_agitation_retardation",
+          "question": "動作や話し方がゆっくりになった、あるいは焦燥感でじっとしていられませんか？",
+          "weight": 0.7,
+          "explanation": "精神運動制止（または焦燥）と呼ばれます。"
+        },
+        {
+          "id": "suicidal_ideation",
+          "question": "消えてしまいたい、死んだ方が楽だ、と考えることがありますか？",
+          "weight": 0.9,
+          "explanation": "希死念慮は非常に深刻なサインであり、注意を要します。"
+        },
+        {
+          "id": "symptoms_worse_in_morning",
+          "question": "症状は朝が最も辛く、夕方になるにつれて少し楽になりますか？",
+          "weight": 0.8,
+          "explanation": "「日内変動」と呼ばれ、うつ病に多く見られる特徴です。"
+        }
+      ]
+    },
+    {
+      "id": "anxiety_disorder",
+      "name": "全般不安障害",
+      "department": "精神科・心療内科",
+      "description": "日常のあらゆることが過剰に不安になり、コントロールできなくなる心の病気です。",
+      "baseProbability": {
+        "male": 0.03,
+        "female": 0.06
+      },
+      "ageModifier": {
+        "0-10": 0.5,
+        "11-20": 1.0,
+        "21-40": 1.5,
+        "41-60": 1.2,
+        "61+": 0.8
+      },
+      "symptoms": [
+        {
+          "id": "excessive_worry",
+          "question": "仕事、健康、将来など、あらゆることに過剰な不安を感じますか？",
+          "weight": 1.0,
+          "explanation": "漠然とした広範な不安が特徴です。"
+        },
+        {
+          "id": "inability_to_control_worry",
+          "question": "「心配しても仕方ない」と分かっていても、不安を止められませんか？",
+          "weight": 0.9,
+          "explanation": "不安のコントロールが不能になっている状態です。"
+        },
+        {
+          "id": "restlessness_anxiety",
+          "question": "いつも落ち着かず、神経が過敏になっている感じがしますか？",
+          "weight": 0.8,
+          "explanation": "常に神経が張り詰めている状態です。"
+        },
+        {
+          "id": "muscle_tension_anxiety",
+          "question": "体が強張っていたり、筋肉が緊張している感じがしますか？",
+          "weight": 0.7,
+          "explanation": "不安は身体的な緊張として現れます。"
+        },
+        {
+          "id": "sleep_onset_insomnia",
+          "question": "心配事が頭を巡って、なかなか寝付けませんか？",
+          "weight": 0.8,
+          "explanation": "入眠障害が一般的です。"
+        },
+        {
+          "id": "irritability",
+          "question": "ちょっとしたことでイライラしたり、怒りっぽくなっていますか？",
+          "weight": 0.6,
+          "explanation": "余裕がなくなり、感情の制御が難しくなります。"
+        },
+        {
+          "id": "easy_fatigability",
+          "question": "特に何もしていないのに、ひどく疲れやすいですか？",
+          "weight": 0.7,
+          "explanation": "常に不安であることは、精神的に莫大な体力を消耗します。"
+        },
+        {
+          "id": "physical_symptoms_anxiety",
+          "question": "動悸、発汗、震えなどの身体症状を伴うことがありますか？",
+          "weight": 0.6,
+          "explanation": "自律神経の乱れを伴います。"
+        },
+        {
+          "id": "blank_mind",
+          "question": "不安のあまり、頭が真っ白になって何も考えられなくなることがありますか？",
+          "weight": 0.7,
+          "explanation": "思考のフリーズは不安障害の症状の一つです。"
+        },
+        {
+          "id": "six_month_duration",
+          "question": "このような不安な状態が半年以上続いていますか？",
+          "weight": 0.8,
+          "explanation": "慢性的な持続期間が診断基準になります。"
+        }
+      ]
+    },
+    {
+      "id": "panic_disorder",
+      "name": "パニック障害",
+      "department": "精神科・心療内科",
+      "description": "突然、動悸や呼吸困難などの「パニック発作」に襲われ、それが起きることへの不安が募る病気です。",
+      "baseProbability": {
+        "male": 0.02,
+        "female": 0.04
+      },
+      "ageModifier": {
+        "0-10": 0.1,
+        "11-20": 1.0,
+        "21-40": 1.5,
+        "41-60": 1.0,
+        "61+": 0.5
+      },
+      "symptoms": [
+        {
+          "id": "sudden_panic_attack",
+          "question": "突然、激しい動悸や息苦しさに襲われたことがありますか？",
+          "weight": 1.0,
+          "explanation": "予期せぬパニック発作がこの病気の核となります。"
+        },
+        {
+          "id": "fear_of_death",
+          "question": "その際、「このまま死んでしまうのではないか」という強い恐怖を感じましたか？",
+          "weight": 0.9,
+          "explanation": "パニック発作に伴う強烈な死の恐怖です。"
+        },
+        {
+          "id": "anticipatory_anxiety",
+          "question": "「またあの発作が起きるのではないか」という不安（予期不安）が常にありますか？",
+          "weight": 1.0,
+          "explanation": "発作そのものよりも、この不安が生活を制限します。"
+        },
+        {
+          "id": "agoraphobia",
+          "question": "逃げ場がない場所（電車、人混み、エレベーター）を避けるようになりましたか？",
+          "weight": 0.9,
+          "explanation": "広場恐怖と呼ばれ、パニック障害に併発しやすいです。"
+        },
+        {
+          "id": "choking_sensation",
+          "question": "喉が詰まったような感じや、窒息感がありますか？",
+          "weight": 0.8,
+          "explanation": "発作時の典型的な感覚です。"
+        },
+        {
+          "id": "trembling_shaking",
+          "question": "体が震えたり、冷や汗が出たりしますか？",
+          "weight": 0.7,
+          "explanation": "自律神経の急激な過覚醒状態です。"
+        },
+        {
+          "id": "dizziness_faintness",
+          "question": "めまい、ふらつき、または気が遠くなる感じがありますか？",
+          "weight": 0.7,
+          "explanation": "脳血流の変動や過呼吸による感覚です。"
+        },
+        {
+          "id": "derealization",
+          "question": "自分が自分ではないような、あるいは現実感がない感じがしますか？",
+          "weight": 0.6,
+          "explanation": "離人感や現実変容感と呼ばれる感覚です。"
+        },
+        {
+          "id": "nausea_distress",
+          "question": "腹部の不快感や吐き気を伴いますか？",
+          "weight": 0.5,
+          "explanation": "消化器系への自律神経の影響です。"
+        },
+        {
+          "id": "duration_of_attack",
+          "question": "その激しい発作は、通常10分〜30分程度で収まりますか？",
+          "weight": 0.8,
+          "explanation": "パニック発作は比較的短時間でピークを越えるのが特徴です。"
+        }
+      ]
+    },
+    {
+      "id": "insomnia",
+      "name": "不眠症",
+      "department": "精神科・心療内科",
+      "description": "寝付きが悪い、夜中に目が覚める、ぐっすり眠れないなどが続き、日中の生活に支障が出る病気です。",
+      "baseProbability": {
+        "male": 0.15,
+        "female": 0.2
+      },
+      "ageModifier": {
+        "0-10": 0.2,
+        "11-20": 0.8,
+        "21-40": 1.2,
+        "41-60": 1.5,
+        "61+": 2.0
+      },
+      "symptoms": [
+        {
+          "id": "difficulty_falling_asleep",
+          "question": "布団に入っても、寝付くまでに30分〜1時間以上かかりますか？",
+          "weight": 1.0,
+          "explanation": "「入眠障害」と呼ばれる典型的な不眠症状です。"
+        },
+        {
+          "id": "frequent_awakening",
+          "question": "夜中に何度も目が覚めて、その後なかなか眠れませんか？",
+          "weight": 0.9,
+          "explanation": "「中途覚醒」と呼ばれる症状です。"
+        },
+        {
+          "id": "early_morning_awakening",
+          "question": "予定よりずっと早く（2時間以上前など）に目が覚めてしまいますか？",
+          "weight": 0.8,
+          "explanation": "「早朝覚醒」と呼ばれ、加齢やうつ傾向で増えます。"
+        },
+        {
+          "id": "non_restorative_sleep",
+          "question": "睡眠時間は足りているはずなのに、熟睡感（ぐっすり寝た感）がありませんか？",
+          "weight": 0.8,
+          "explanation": "「熟眠障害」と呼ばれ、睡眠の質が低下している状態です。"
+        },
+        {
+          "id": "daytime_sleepiness",
+          "question": "日中、強い眠気に襲われたり、集中力が続かなかったりしますか？",
+          "weight": 0.9,
+          "explanation": "不眠症の診断には、日中の機能障害があることが必須条件です。"
+        },
+        {
+          "id": "anxiety_about_sleep",
+          "question": "「今夜も眠れないのではないか」と考えると不安になりますか？",
+          "weight": 0.7,
+          "explanation": "眠りに対する予期不安が、さらに不眠を悪化させる悪循環です。"
+        },
+        {
+          "id": "irritability_lack_of_sleep",
+          "question": "寝不足のせいでイライラしたり、気分が沈んだりしますか？",
+          "weight": 0.6,
+          "explanation": "情緒の安定に睡眠は不可欠です。"
+        },
+        {
+          "id": "long_duration_insomnia",
+          "question": "眠れない状態が1ヶ月以上続いていますか？",
+          "weight": 0.7,
+          "explanation": "慢性的な期間が医学的な不眠症の目安となります。"
+        },
+        {
+          "id": "tension_at_night",
+          "question": "夜、布団に入るとかえって頭が冴えてしまいますか？",
+          "weight": 0.7,
+          "explanation": "脳が夜間に過覚醒状態になっています。"
+        },
+        {
+          "id": "morning_headache_insomnia",
+          "question": "起きた時に頭が重かったり、頭痛がしたりしますか？",
+          "weight": 0.5,
+          "explanation": "睡眠不足や質の悪さが身体に影響しています。"
+        }
+      ]
+    },
+    {
+      "id": "migraine",
+      "name": "片頭痛",
+      "department": "内科・脳神経内科",
+      "description": "頭の片側（時に両側）がズキズキと拍動するように痛む頭痛です。光や音に敏感になります。",
+      "baseProbability": {
+        "male": 0.03,
+        "female": 0.1
+      },
+      "ageModifier": {
+        "0-10": 0.5,
+        "11-20": 1.2,
+        "21-40": 1.5,
+        "41-60": 1.0,
+        "61+": 0.5
+      },
+      "symptoms": [
+        {
+          "id": "pulsating_pain",
+          "question": "心臓の拍動に合わせて「ズキズキ」と痛みますか？",
+          "weight": 1.0,
+          "explanation": "血管性の痛みである拍動性痛は片頭痛の大きな特徴です。"
+        },
+        {
+          "id": "unilateral_headache",
+          "question": "頭の片側だけが痛むことが多いですか？",
+          "weight": 0.9,
+          "explanation": "「片」頭痛の名前の通り、片側性に起こることが多いです。"
+        },
+        {
+          "id": "nausea_with_headache",
+          "question": "頭痛と一緒に、吐き気や嘔吐がありますか？",
+          "weight": 0.9,
+          "explanation": "消化器症状を伴いやすいのが特徴です。"
+        },
+        {
+          "id": "photophobia_phonophobia",
+          "question": "頭痛の最中、光がまぶしかったり音がうるさく感じたりしますか？",
+          "weight": 0.9,
+          "explanation": "感覚過敏を伴うのは片頭痛に非常に典型的です。"
+        },
+        {
+          "id": "aura_scotoma",
+          "question": "頭痛の前に、目の前で光がチカチカするような予兆がありますか？",
+          "weight": 0.8,
+          "explanation": "「閃輝暗点」と呼ばれる典型的な前兆症状です。"
+        },
+        {
+          "id": "pain_worse_activity",
+          "question": "階段の上り下りなど、体を動かすと痛みがひどくなりますか？",
+          "weight": 0.8,
+          "explanation": "日常的な動作で増悪するのが緊張型頭痛との違いです。"
+        },
+        {
+          "id": "headache_duration_4_72h",
+          "question": "一度頭痛が始まると、数時間から数日間（最大3日）続きますか？",
+          "weight": 0.8,
+          "explanation": "持続時間のパターンが診断に役立ちます。"
+        },
+        {
+          "id": "weather_trigger_headache",
+          "question": "気圧の変化（雨の前など）で頭痛が起きやすいですか？",
+          "weight": 0.7,
+          "explanation": "環境変化が脳の血管の拡張を誘発するためです。"
+        },
+        {
+          "id": "fatigue_after_headache",
+          "question": "頭痛が終わった後、ひどくだるかったり眠くなったりしますか？",
+          "weight": 0.6,
+          "explanation": "脳の過覚醒状態が収まった後の反動です。"
+        },
+        {
+          "id": "family_migraine",
+          "question": "家族に同じような頭痛持ちの人がいますか？",
+          "weight": 0.7,
+          "explanation": "遺伝的な体質が関与すると言われています。"
+        }
+      ]
+    },
+    {
+      "id": "tension_headache",
+      "name": "緊張型頭痛",
+      "department": "内科・脳神経内科",
+      "description": "首や肩の筋肉が緊張して起こる頭痛です。頭全体が締め付けられるように痛みます。",
+      "baseProbability": {
+        "male": 0.2,
+        "female": 0.3
+      },
+      "ageModifier": {
+        "0-10": 0.3,
+        "11-20": 0.8,
+        "21-40": 1.2,
+        "41-60": 1.5,
+        "61+": 1.5
+      },
+      "symptoms": [
+        {
+          "id": "tightening_pain",
+          "question": "頭がぎゅーっと締め付けられる、または重い感じの痛みですか？",
+          "weight": 1.0,
+          "explanation": "非拍動性の圧迫感がこの頭痛の特徴です。"
+        },
+        {
+          "id": "bilateral_headache",
+          "question": "頭の両側、あるいは後頭部から首筋にかけて痛みますか？",
+          "weight": 0.9,
+          "explanation": "左右対称に広がることが多いです。"
+        },
+        {
+          "id": "no_nausea_headache",
+          "question": "吐き気はあまり感じませんか？",
+          "weight": 0.7,
+          "explanation": "片頭痛と違い、消化器症状は少ないです。"
+        },
+        {
+          "id": "pain_not_worse_walking",
+          "question": "歩いたり動いたりしても、痛みはそれほど変わりませんか？",
+          "weight": 0.8,
+          "explanation": "動作による増悪がないのが特徴です。"
+        },
+        {
+          "id": "shoulder_stiffness_with_headache",
+          "question": "ひどい肩こりや首のコリを伴いますか？",
+          "weight": 1.0,
+          "explanation": "筋肉の緊張が直接的な原因となっていることが多いです。"
+        },
+        {
+          "id": "dull_persistent_pain",
+          "question": "我慢できないほどではないが、重苦しい痛みがダラダラと続きますか？",
+          "weight": 0.8,
+          "explanation": "慢性的に続く持続的な痛みが典型的です。"
+        },
+        {
+          "id": "warmth_relief_headache",
+          "question": "お風呂に入ったり温まったりすると楽になりますか？",
+          "weight": 0.8,
+          "explanation": "血流が良くなり筋肉がほぐれると改善します。"
+        },
+        {
+          "id": "stress_headache_trigger",
+          "question": "仕事のストレスやパソコン作業が続くと痛くなりますか？",
+          "weight": 0.8,
+          "explanation": "心身の緊張が引き金になります。"
+        },
+        {
+          "id": "afternoon_worsening",
+          "question": "午後から夕方にかけて、だんだん痛みが強くなりますか？",
+          "weight": 0.7,
+          "explanation": "一日の疲れが溜まってくる時間に悪化しやすいです。"
+        },
+        {
+          "id": "no_aura_scotoma",
+          "question": "チカチカする光などの前兆はありませんか？",
+          "weight": 0.6,
+          "explanation": "片頭痛のような前兆は伴いません。"
+        }
+      ]
+    },
+    {
+      "id": "hypothyroidism",
+      "name": "甲状腺機能低下症（橋本病など）",
+      "department": "内科・内分泌内科",
+      "description": "喉にある甲状腺ホルモンが不足し、全身の代謝が低下する病気です。女性に多いです。",
+      "baseProbability": {
+        "male": 0.01,
+        "female": 0.05
+      },
+      "ageModifier": {
+        "0-10": 0.2,
+        "11-20": 0.5,
+        "21-40": 1.0,
+        "41-60": 1.5,
+        "61+": 1.5
+      },
+      "symptoms": [
+        {
+          "id": "feeling_cold_always",
+          "question": "寒がりになり、周りが暑くても寒さを感じますか？",
+          "weight": 1.0,
+          "explanation": "代謝が落ちて体温が作られにくいためです。"
+        },
+        {
+          "id": "weight_gain_unexplained",
+          "question": "食べていないのに体重が増えたり、体がむくんだりしますか？",
+          "weight": 0.9,
+          "explanation": "水分保持や代謝低下により体重が増加しやすくなります。"
+        },
+        {
+          "id": "slow_heart_rate",
+          "question": "脈拍がゆっくり（徐脈）になっていますか？",
+          "weight": 0.8,
+          "explanation": "心臓の活動もスローダウンします。"
+        },
+        {
+          "id": "dry_skin_hypo",
+          "question": "肌が非常に乾燥して、カサカサしていますか？",
+          "weight": 0.7,
+          "explanation": "皮膚の新陳代謝も低下します。"
+        },
+        {
+          "id": "constipation_chronic",
+          "question": "ひどい便秘になりやすくなりましたか？",
+          "weight": 0.7,
+          "explanation": "胃腸の動きが鈍くなります。"
+        },
+        {
+          "id": "excessive_sleepiness",
+          "question": "昼間も常に眠く、活動的になれませんか？",
+          "weight": 0.8,
+          "explanation": "脳の活動レベルも低下するためです。"
+        },
+        {
+          "id": "slow_speech_movement",
+          "question": "動作や話し方がゆっくりになったと言われませんか？",
+          "weight": 0.8,
+          "explanation": "全体的な反応速度が落ちるのが特徴です。"
+        },
+        {
+          "id": "thinning_hair_eyebrow",
+          "question": "抜け毛が増えたり、まゆ毛の外側が薄くなったりしましたか？",
+          "weight": 0.7,
+          "explanation": "甲状腺ホルモン不足による毛髪の変化です。"
+        },
+        {
+          "id": "swelling_neck_goiter",
+          "question": "首の付け根（喉仏の下）が腫れている感じがしますか？",
+          "weight": 0.9,
+          "explanation": "甲状腺そのものが腫大することがあります。"
+        },
+        {
+          "id": "forgetfulness_hypo",
+          "question": "物忘れがひどくなったり、ぼーっとすることが増えましたか？",
+          "weight": 0.7,
+          "explanation": "認知機能の低下を招くことがあります。"
+        }
+      ]
+    },
+    {
+      "id": "hyperthyroidism",
+      "name": "甲状腺機能亢進症（バセドウ病）",
+      "department": "内科・内分泌内科",
+      "description": "甲状腺ホルモンが過剰に出すぎて、常に激しい運動をしているような状態になる病気です。",
+      "baseProbability": {
+        "male": 0.01,
+        "female": 0.04
+      },
+      "ageModifier": {
+        "0-10": 0.2,
+        "11-20": 1.0,
+        "21-40": 1.5,
+        "41-60": 1.2,
+        "61+": 0.8
+      },
+      "symptoms": [
+        {
+          "id": "palpitations_resting",
+          "question": "じっとしていても心臓がドキドキ（動悸）しますか？",
+          "weight": 1.0,
+          "explanation": "代謝が異常に高まり、心拍数が増加します。"
+        },
+        {
+          "id": "excessive_sweating",
+          "question": "暑がりになり、異常に汗をかきますか？",
+          "weight": 0.9,
+          "explanation": "体温が上がりやすく、発汗量が増えます。"
+        },
+        {
+          "id": "weight_loss_increased_appetite",
+          "question": "食べているのに体重がどんどん減りますか？",
+          "weight": 1.0,
+          "explanation": "エネルギーの消費が摂取を上回るためです。"
+        },
+        {
+          "id": "finger_tremors",
+          "question": "指先が細かく震えますか？",
+          "weight": 0.9,
+          "explanation": "神経が過敏になり、微細な震え（手指振戦）が出ます。"
+        },
+        {
+          "id": "irritability_restlessness",
+          "question": "イライラして落ち着かず、集中力が続きませんか？",
+          "weight": 0.8,
+          "explanation": "精神的にも過興奮状態になります。"
+        },
+        {
+          "id": "bulging_eyes",
+          "question": "目が突き出てきた（眼球突出）感じがしますか？",
+          "weight": 0.7,
+          "explanation": "バセドウ病特有の眼症状です。"
+        },
+        {
+          "id": "frequent_bowel_movements_hyper",
+          "question": "排便回数が増えたり、軟便になったりしますか？",
+          "weight": 0.7,
+          "explanation": "腸の動きが活発になりすぎます。"
+        },
+        {
+          "id": "goiter_swelling",
+          "question": "首の前側（甲状腺）が全体的に腫れていますか？",
+          "weight": 0.9,
+          "explanation": "甲状腺の機能亢進に伴い腫大することが多いです。"
+        },
+        {
+          "id": "fatigue_severe_hyper",
+          "question": "非常に疲れやすく、階段を上るだけで息が切れますか？",
+          "weight": 0.8,
+          "explanation": "常に全力疾走しているような状態なので、体力を激しく消耗します。"
+        },
+        {
+          "id": "muscle_weakness_legs",
+          "question": "足に力が入りにくかったり、立ち上がりにくかったりしますか？",
+          "weight": 0.6,
+          "explanation": "筋力の低下を伴うことがあります。"
+        }
+      ]
+    },
+    {
+      "id": "hemorrhoids",
+      "name": "痔（痔核・裂痔・痔瘻）",
+      "department": "肛門外科・外科",
+      "description": "お尻の血管がいぼ状に腫れたり（いぼ痔）、出口が切れたり（切れ痔）する病気です。",
+      "baseProbability": {
+        "male": 0.15,
+        "female": 0.15
+      },
+      "ageModifier": {
+        "0-10": 0.1,
+        "11-20": 0.5,
+        "21-40": 1.2,
+        "41-60": 1.5,
+        "61+": 1.3
+      },
+      "symptoms": [
+        {
+          "id": "anal_bleeding_bright_red",
+          "question": "排便時、紙に鮮血がついたり、ポタポタ血が出ますか？",
+          "weight": 1.0,
+          "explanation": "肛門付近からの新しい出血は痔の典型的なサインです。"
+        },
+        {
+          "id": "anal_pain_defecation",
+          "question": "排便の時に激しい痛みを感じますか？",
+          "weight": 0.9,
+          "explanation": "特に切れ痔や、いぼ痔が炎症を起こしていると痛みます。"
+        },
+        {
+          "id": "anal_prolapse",
+          "question": "肛門の外に何かいぼのようなものが飛び出しますか？",
+          "weight": 1.0,
+          "explanation": "内痔核（いぼ痔）が脱出している状態です。"
+        },
+        {
+          "id": "anal_itching",
+          "question": "お尻の周りがかゆい、またはベタつく感じがしますか？",
+          "weight": 0.7,
+          "explanation": "粘膜液の付着や炎症によりかゆみが生じます。"
+        },
+        {
+          "id": "anal_lump_swelling",
+          "question": "肛門の周りにしこりや、腫れた感じがありますか？",
+          "weight": 0.8,
+          "explanation": "外痔核や血栓ができているサインです。"
+        },
+        {
+          "id": "constipation_straining",
+          "question": "ひどい便秘で、いつも強くイキみますか？",
+          "weight": 0.8,
+          "explanation": "強いいきみは肛門への負担を増やし、痔の最大の誘因です。"
+        },
+        {
+          "id": "anal_pus_discharge",
+          "question": "お尻から膿のような液体が出て、下着が汚れますか？",
+          "weight": 0.8,
+          "explanation": "「痔瘻（じろう）」と呼ばれる状態の可能性があります。"
+        },
+        {
+          "id": "feeling_of_rectal_fullness",
+          "question": "便を出した後も、まだ何か残っている感じがしますか？",
+          "weight": 0.6,
+          "explanation": "いぼ痔による違和感であることがあります。"
+        },
+        {
+          "id": "sedentary_lifestyle_anal",
+          "question": "仕事で長時間座りっぱなしのことが多いですか？",
+          "weight": 0.7,
+          "explanation": "お尻へのうっ血を招き、痔を悪化させます。"
+        },
+        {
+          "id": "bleeding_painless",
+          "question": "痛みはないのに、血だけが出ることがありますか？",
+          "weight": 0.8,
+          "explanation": "内痔核の初期症状として一般的です。"
+        }
+      ]
+    },
+    {
+      "id": "iron_deficiency_anemia",
+      "name": "鉄欠乏性貧血",
+      "department": "内科",
+      "description": "体内の鉄分が不足することで起こる、最も一般的な貧血です。特に生理のある女性に多いです。",
+      "baseProbability": {
+        "male": 0.02,
+        "female": 0.2
+      },
+      "ageModifier": {
+        "0-10": 0.3,
+        "11-20": 1.5,
+        "21-40": 1.8,
+        "41-60": 1.5,
+        "61+": 0.8
+      },
+      "symptoms": [
+        {
+          "id": "heavy_menstrual_bleeding",
+          "question": "（女性の場合）生理の量が多い、または期間が長いですか？",
+          "weight": 1.0,
+          "explanation": "出血による鉄消失は女性の貧血の最大原因です。"
+        },
+        {
+          "id": "brittle_nails",
+          "question": "爪が割れやすかったり、薄くなったりしていますか？",
+          "weight": 0.8,
+          "explanation": "鉄不足により爪の組織が弱くなります。"
+        },
+        {
+          "id": "hair_loss_mild",
+          "question": "最近、抜け毛が増えた感じがしますか？",
+          "weight": 0.6,
+          "explanation": "毛根への酸素・栄養供給不足の影響です。"
+        },
+        {
+          "id": "dizziness_standing_iron",
+          "question": "急に立ち上がるとクラクラしますか？",
+          "weight": 0.9,
+          "explanation": "脳への一時的な血流・酸素不足です。"
+        },
+        {
+          "id": "restless_legs_iron",
+          "question": "夜、足がムズムズしてじっとしていられないことがありますか？",
+          "weight": 0.7,
+          "explanation": "「むずむず脚症候群」は鉄欠乏と深く関連しています。"
+        },
+        {
+          "id": "fatigue_morning",
+          "question": "朝起きた時から体が重く、疲れが取れていませんか？",
+          "weight": 0.8,
+          "explanation": "基礎的な代謝能力が落ちています。"
+        },
+        {
+          "id": "unusual_cravings_ice",
+          "question": "ガリガリと氷を食べるのが好きですか？",
+          "weight": 0.9,
+          "explanation": "鉄欠乏特有の異食症のサインです。"
+        },
+        {
+          "id": "short_of_breath_stairs",
+          "question": "階段の上りで、周りの人より息が切れますか？",
+          "weight": 0.9,
+          "explanation": "酸素を運ぶヘモグロビンが足りないためです。"
+        },
+        {
+          "id": "pale_lip_color",
+          "question": "唇の色が白っぽくなっていますか？",
+          "weight": 0.7,
+          "explanation": "粘膜の色は血液の濃さを反映します。"
+        },
+        {
+          "id": "difficulty_concentrating_iron",
+          "question": "仕事や勉強で、集中力が続かなくなりましたか？",
+          "weight": 0.6,
+          "explanation": "脳への酸素供給不足による影響です。"
+        }
+      ]
+    },
+    {
+      "id": "menopause_disorder",
+      "name": "更年期障害",
+      "department": "婦人科",
+      "description": "閉経前後のホルモンバランスの変化により、心身に様々な不調が現れる状態です。",
+      "baseProbability": {
+        "male": 0.01,
+        "female": 0.2
+      },
+      "ageModifier": {
+        "0-10": 0.0,
+        "11-20": 0.0,
+        "21-40": 0.3,
+        "41-60": 2.5,
+        "61+": 1.0
+      },
+      "symptoms": [
+        {
+          "id": "hot_flashes",
+          "question": "急に顔が熱くなったり、のぼせたりしますか（ホットフラッシュ）？",
+          "weight": 1.0,
+          "explanation": "自律神経の乱れによる更年期の代表的症状です。"
+        },
+        {
+          "id": "night_sweats",
+          "question": "夜中にひどい汗をかいて目が覚めますか？",
+          "weight": 0.9,
+          "explanation": "血管運動神経の不安定さによる発汗です。"
+        },
+        {
+          "id": "irregular_periods",
+          "question": "生理の周期が乱れたり、量が変化したりしていますか？",
+          "weight": 1.0,
+          "explanation": "卵巣機能低下の直接的な兆候です。"
+        },
+        {
+          "id": "unexplained_irritability",
+          "question": "理由もなくイライラしたり、急に悲しくなったりしますか？",
+          "weight": 0.8,
+          "explanation": "ホルモン変化が情緒不安定を招きます。"
+        },
+        {
+          "id": "shoulder_stiffness_menopause",
+          "question": "最近、肩こりや腰痛がひどくなりましたか？",
+          "weight": 0.7,
+          "explanation": "血行不良や自律神経の影響で痛みが出やすくなります。"
+        },
+        {
+          "id": "insomnia_menopause",
+          "question": "寝付きが悪かったり、途中で何度も目が覚めますか？",
+          "weight": 0.8,
+          "explanation": "ホルモンの乱れと不安感が睡眠を妨げます。"
+        },
+        {
+          "id": "palpitations_anxiety",
+          "question": "心臓がドキドキしたり、不安な気持ちに襲われますか？",
+          "weight": 0.8,
+          "explanation": "自律神経失調症状の一つです。"
+        },
+        {
+          "id": "fatigue_menopause",
+          "question": "常に体が重だるく、家事や仕事が億劫ですか？",
+          "weight": 0.7,
+          "explanation": "全体的なエネルギー低下を感じやすくなります。"
+        },
+        {
+          "id": "dry_vagina_skin",
+          "question": "肌の乾燥や、局所の違和感がありますか？",
+          "weight": 0.6,
+          "explanation": "エストロゲン減少による粘膜や皮膚の乾燥です。"
+        },
+        {
+          "id": "headache_menopause",
+          "question": "頭が重かったり、頭痛が頻発したりしますか？",
+          "weight": 0.6,
+          "explanation": "血管の緊張の変化によるものです。"
+        }
+      ]
+    },
+    {
+      "id": "hay_fever",
+      "name": "花粉症",
+      "department": "耳鼻科・眼科・内科",
+      "description": "スギやヒノキなどの花粉に対して起こる季節性のアレルギー反応です。",
+      "baseProbability": {
+        "male": 0.25,
+        "female": 0.25
+      },
+      "ageModifier": {
+        "0-10": 0.8,
+        "11-20": 1.2,
+        "21-40": 1.5,
+        "41-60": 1.2,
+        "61+": 0.8
+      },
+      "symptoms": [
+        {
+          "id": "seasonal_rhinitis",
+          "question": "特定の季節（春や秋）にだけ鼻水・くしゃみが出ますか？",
+          "weight": 1.0,
+          "explanation": "花粉の飛散時期と一致するのが最大の特徴です。"
+        },
+        {
+          "id": "sneezing_fits",
+          "question": "くしゃみが何度も連続して止まらなくなりますか？",
+          "weight": 0.9,
+          "explanation": "強いアレルギー反応の証拠です。"
+        },
+        {
+          "id": "watery_runny_nose",
+          "question": "蛇口をひねったような、水っぽい鼻水が出ますか？",
+          "weight": 1.0,
+          "explanation": "花粉症特有の鼻水の性質です。"
+        },
+        {
+          "id": "intense_eye_itching",
+          "question": "目を取り出して洗いたいほどのかゆみがありますか？",
+          "weight": 1.0,
+          "explanation": "目の強いかゆみは花粉症に典型的です。"
+        },
+        {
+          "id": "throat_itching",
+          "question": "喉の奥や耳の奥がかゆい感じがしますか？",
+          "weight": 0.8,
+          "explanation": "粘膜がつながっているため、広範囲にかゆみが出ます。"
+        },
+        {
+          "id": "outdoor_worsening",
+          "question": "外出すると症状が悪化し、室内に入ると少し落ち着きますか？",
+          "weight": 0.9,
+          "explanation": "花粉の曝露量に比例して症状が出ます。"
+        },
+        {
+          "id": "skin_irritation_pollen",
+          "question": "この時期、顔などの皮膚がカサカサしたりかゆくなりますか？",
+          "weight": 0.6,
+          "explanation": "「花粉症皮膚炎」と呼ばれる症状です。"
+        },
+        {
+          "id": "pollen_fatigue",
+          "question": "頭がぼーっとして、強い倦怠感がありますか？",
+          "weight": 0.7,
+          "explanation": "アレルギー反応そのものや睡眠不足による影響です。"
+        },
+        {
+          "id": "no_colored_mucus",
+          "question": "鼻水は透明で、黄色くはありませんか？",
+          "weight": 0.8,
+          "explanation": "細菌感染（風邪）との見分けに重要です。"
+        },
+        {
+          "id": "eye_redness_allergy",
+          "question": "白目が充血して、まぶたが腫れていますか？",
+          "weight": 0.8,
+          "explanation": "アレルギー性結膜炎の併発です。"
+        }
+      ]
+    },
+    {
+      "id": "autonomic_imbalance",
+      "name": "自律神経失調症",
+      "department": "心療内科・内科",
+      "description": "ストレスなどが原因で、内臓や血管の働きを調整する自律神経のバランスが崩れる状態です。",
+      "baseProbability": {
+        "male": 0.05,
+        "female": 0.1
+      },
+      "ageModifier": {
+        "0-10": 0.3,
+        "11-20": 1.0,
+        "21-40": 1.5,
+        "41-60": 1.3,
+        "61+": 0.8
+      },
+      "symptoms": [
+        {
+          "id": "unstable_symptoms",
+          "question": "日によって痛む場所や、だるさの程度が変わりますか？",
+          "weight": 1.0,
+          "explanation": "症状が一定せず「不定愁訴」であることが特徴です。"
+        },
+        {
+          "id": "fatigue_constant",
+          "question": "しっかり休んでも疲れが取れず、ずっと体がだるいですか？",
+          "weight": 0.9,
+          "explanation": "自律神経の回復機能が低下しています。"
+        },
+        {
+          "id": "dizziness_floating",
+          "question": "ふわふわ浮いているような、非回転性のめまいがありますか？",
+          "weight": 0.8,
+          "explanation": "脳の血流調節がうまくいっていないサインです。"
+        },
+        {
+          "id": "palpitations_stress",
+          "question": "検査で異常はないのに、急に動悸がしたり胸が苦しくなりますか？",
+          "weight": 0.8,
+          "explanation": "心臓を司る自律神経の乱れです。"
+        },
+        {
+          "id": "body_temperature_dysregulation",
+          "question": "急に体が熱くなったり、逆に手足が氷のように冷えたりしますか？",
+          "weight": 0.8,
+          "explanation": "体温調節機能がうまく働いていない証拠です。"
+        },
+        {
+          "id": "insomnia_autonomic",
+          "question": "眠りが浅く、小さな音で何度も目が覚めますか？",
+          "weight": 0.7,
+          "explanation": "交感神経が夜間も優位になっている状態です。"
+        },
+        {
+          "id": "head_heaviness_chronic",
+          "question": "頭が重くスッキリしない「頭重感」が続きますか？",
+          "weight": 0.7,
+          "explanation": "脳の血流や筋肉の緊張が不安定なためです。"
+        },
+        {
+          "id": "digestive_upset_minor",
+          "question": "胃もたれ、便秘、下痢などの胃腸トラブルが頻繁にありますか？",
+          "weight": 0.7,
+          "explanation": "消化器の働きは自律神経に直結しています。"
+        },
+        {
+          "id": "mental_fatigue_anxiety",
+          "question": "気分が塞ぎ込んだり、不安になりやすいですか？",
+          "weight": 0.8,
+          "explanation": "心と体はつながっており、精神面にも影響が出ます。"
+        },
+        {
+          "id": "stress_history",
+          "question": "最近、環境の変化や人間関係などで強いストレスがありましたか？",
+          "weight": 0.9,
+          "explanation": "ストレスが最大の誘因となります。"
+        }
+      ]
+    },
+    {
+      "id": "hyperventilation_syndrome",
+      "name": "過換気症候群（過呼吸）",
+      "department": "内科・心療内科",
+      "description": "不安や恐怖により呼吸をやりすぎてしまい、血液中の二酸化炭素が減って様々な症状が出る状態です。",
+      "baseProbability": {
+        "male": 0.02,
+        "female": 0.06
+      },
+      "ageModifier": {
+        "0-10": 0.2,
+        "11-20": 1.5,
+        "21-40": 1.2,
+        "41-60": 0.7,
+        "61+": 0.3
+      },
+      "symptoms": [
+        {
+          "id": "rapid_shallow_breathing",
+          "question": "突然、息が荒くなり、吸っても吸っても苦しい感じがしましたか？",
+          "weight": 1.0,
+          "explanation": "過剰な呼吸（過換気）そのものの状態です。"
+        },
+        {
+          "id": "numbness_fingertips_mouth",
+          "question": "手足の先や、口の周りがしびれる感じがありますか？",
+          "weight": 1.0,
+          "explanation": "血液がアルカリ性に傾くことで起こる典型的な症状です。"
+        },
+        {
+          "id": "muscle_cramping_tetany",
+          "question": "手がこわばって、指が勝手に曲がったり固まったりしますか？",
+          "weight": 1.0,
+          "explanation": "「テタニー」と呼ばれる、過換気時の特徴的な筋硬直です。"
+        },
+        {
+          "id": "palpitations_hyper",
+          "question": "激しい動悸や、胸の痛みを感じますか？",
+          "weight": 0.8,
+          "explanation": "パニックに伴う身体反応です。"
+        },
+        {
+          "id": "faintness_loss_of_consciousness",
+          "question": "頭が真っ白になり、気が遠くなる感じがありますか？",
+          "weight": 0.7,
+          "explanation": "脳血管の収縮により意識が朦朧とすることがあります。"
+        },
+        {
+          "id": "strong_anxiety_trigger",
+          "question": "発症の直前、強い恐怖やパニック、興奮状態にありましたか？",
+          "weight": 0.9,
+          "explanation": "精神的ショックが引き金になることがほとんどです。"
+        },
+        {
+          "id": "dry_mouth_breathing",
+          "question": "口の中がひどく乾いていますか？",
+          "weight": 0.6,
+          "explanation": "激しい口呼吸による乾燥です。"
+        },
+        {
+          "id": "recovery_with_calm",
+          "question": "落ち着いてゆっくり呼吸をすると、症状が改善しますか？",
+          "weight": 0.9,
+          "explanation": "二酸化炭素濃度が戻れば症状は消失します。"
+        },
+        {
+          "id": "history_of_episodes",
+          "question": "過去にも同じようなことが何度かありましたか？",
+          "weight": 0.7,
+          "explanation": "繰り返しやすい性質があります。"
+        },
+        {
+          "id": "feeling_of_suffocation",
+          "question": "空気がないような、窒息しそうな恐怖感がありますか？",
+          "weight": 0.8,
+          "explanation": "実際には吸いすぎているのですが、主観的には窒息感を感じます。"
+        }
+      ]
+    },
+    {
+      "id": "menieres_disease",
+      "name": "メニエール病",
+      "department": "耳鼻科",
+      "description": "耳の奥（内耳）に水が溜まることで、激しいめまい、難聴、耳鳴りがセットで起こる病気です。",
+      "baseProbability": {
+        "male": 0.02,
+        "female": 0.03
+      },
+      "ageModifier": {
+        "0-10": 0.0,
+        "11-20": 0.2,
+        "21-40": 1.2,
+        "41-60": 1.5,
+        "61+": 1.2
+      },
+      "symptoms": [
+        {
+          "id": "vertigo_rotational",
+          "question": "自分や周囲がぐるぐる回るような激しいめまいがありますか？",
+          "weight": 1.0,
+          "explanation": "回転性めまいはメニエール病の主症状です。"
+        },
+        {
+          "id": "vertigo_long_duration",
+          "question": "めまいは数十分から数時間（24時間以内）続きますか？",
+          "weight": 0.9,
+          "explanation": "数秒で終わるめまいではなく、長く続くのが特徴です。"
+        },
+        {
+          "id": "low_tone_hearing_loss",
+          "question": "低い音が聞こえにくい、または耳が詰まった感じがしますか？",
+          "weight": 1.0,
+          "explanation": "低音域の難聴はメニエール病の初期に非常に典型的です。"
+        },
+        {
+          "id": "tinnitus_roaring",
+          "question": "「ブーン」「ゴー」という低い音の耳鳴りがしますか？",
+          "weight": 0.9,
+          "explanation": "難聴に伴う低音の耳鳴りが特徴です。"
+        },
+        {
+          "id": "nausea_vomiting_vertigo",
+          "question": "めまいに伴い、激しい吐き気や嘔吐がありますか？",
+          "weight": 0.8,
+          "explanation": "強いめまいによる自律神経への影響です。"
+        },
+        {
+          "id": "recurrent_episodes",
+          "question": "このようなめまい発作を何度も繰り返していますか？",
+          "weight": 1.0,
+          "explanation": "反復性はメニエール病の診断に不可欠な要素です。"
+        },
+        {
+          "id": "one_sided_ear_symptom",
+          "question": "症状は片方の耳に集中していますか？",
+          "weight": 0.8,
+          "explanation": "多くの場合、最初は片側から始まります。"
+        },
+        {
+          "id": "feeling_of_fullness_ear",
+          "question": "耳の中に水が詰まっているような不快感がありますか？",
+          "weight": 0.9,
+          "explanation": "「内リンパ水腫」による圧迫感です。"
+        },
+        {
+          "id": "symptoms_fluctuate",
+          "question": "聞こえの良さが、日によって良くなったり悪くなったりしますか？",
+          "weight": 0.8,
+          "explanation": "変動性難聴と呼ばれ、病状の変化を反映します。"
+        },
+        {
+          "id": "fatigue_as_trigger",
+          "question": "過労や睡眠不足、ストレスがある時に発作が起きますか？",
+          "weight": 0.7,
+          "explanation": "ストレスが内耳の水腫を悪化させると考えられています。"
+        }
+      ]
+    },
+    {
+      "id": "asthma",
+      "name": "気管支喘息",
+      "department": "内科・呼吸器内科",
+      "description": "空気の通り道（気道）が慢性的な炎症により狭くなり、呼吸が苦しくなる病気です。",
+      "baseProbability": {
+        "male": 0.05,
+        "female": 0.05
+      },
+      "ageModifier": {
+        "0-10": 1.5,
+        "11-20": 1.0,
+        "21-40": 0.8,
+        "41-60": 1.0,
+        "61+": 1.2
+      },
+      "symptoms": [
+        {
+          "id": "wheezing_asthma",
+          "question": "呼吸をする時に「ゼーゼー」「ヒューヒュー」という音がしますか？",
+          "weight": 1.0,
+          "explanation": "喘鳴（ぜんめい）は喘息の最も特徴的なサインです。"
+        },
+        {
+          "id": "dyspnea_night_morning",
+          "question": "夜間や明け方に息苦しくて目が覚めることがありますか？",
+          "weight": 1.0,
+          "explanation": "時間帯による悪化は喘息の診断に重要です。"
+        },
+        {
+          "id": "cough_variant_asthma",
+          "question": "痰の出ない「乾いた咳」が長く続いていますか？",
+          "weight": 0.8,
+          "explanation": "咳だけが症状の「咳喘息」というタイプもあります。"
+        },
+        {
+          "id": "trigger_exercise",
+          "question": "運動をすると息苦しくなったり咳が出たりしますか？",
+          "weight": 0.7,
+          "explanation": "運動誘発性喘息の確認です。"
+        },
+        {
+          "id": "trigger_cold_air",
+          "question": "冷たい空気を吸ったり、香水の匂いを嗅ぐと咳き込みますか？",
+          "weight": 0.8,
+          "explanation": "気道が過敏になっている証拠です。"
+        },
+        {
+          "id": "chest_tightness_asthma",
+          "question": "胸が締め付けられるような、重苦しい感じがありますか？",
+          "weight": 0.8,
+          "explanation": "気道が狭窄している感覚です。"
+        },
+        {
+          "id": "relief_with_bronchodilator",
+          "question": "吸入薬（気管支拡張剤）を使うと、すぐに楽になりますか？",
+          "weight": 0.9,
+          "explanation": "薬への反応の良さは喘息であることを強く示唆します。"
+        },
+        {
+          "id": "allergy_history",
+          "question": "アトピーや鼻炎など、他のアレルギー疾患がありますか？",
+          "weight": 0.7,
+          "explanation": "アレルギー体質の人に発症しやすいです。"
+        },
+        {
+          "id": "seasonal_exacerbation",
+          "question": "季節の変わり目に症状が出やすいですか？",
+          "weight": 0.7,
+          "explanation": "気圧や気温の変化が気道に影響します。"
+        },
+        {
+          "id": "phlegm_sticky_clear",
+          "question": "透明で粘り気の強い痰が出ますか？",
+          "weight": 0.6,
+          "explanation": "喘息の際に特徴的な痰の性質です。"
+        }
+      ]
+    },
+    {
+      "id": "appendicitis",
+      "name": "急性虫垂炎（盲腸）",
+      "department": "外科",
+      "description": "盲腸の先にある虫垂に細菌が入り、炎症を起こす病気です。早めの診断が必要です。",
+      "baseProbability": {
+        "male": 0.02,
+        "female": 0.02
+      },
+      "ageModifier": {
+        "0-10": 1.2,
+        "11-20": 1.5,
+        "21-40": 1.0,
+        "41-60": 0.7,
+        "61+": 0.5
+      },
+      "symptoms": [
+        {
+          "id": "pain_lower_right_abdomen",
+          "question": "右下腹部に、はっきりした痛みがありますか？",
+          "weight": 1.0,
+          "explanation": "虫垂がある場所の痛みは、診断の決め手になります。"
+        },
+        {
+          "id": "pain_migration",
+          "question": "最初はみぞおちが痛かったのが、徐々に右下腹部に移りましたか？",
+          "weight": 1.0,
+          "explanation": "痛みの移動は急性虫垂炎に非常に典型的な経過です。"
+        },
+        {
+          "id": "rebound_tenderness",
+          "question": "右下腹部を押して、パッと離した時の方が痛みますか？",
+          "weight": 0.9,
+          "explanation": "「反跳痛」と呼ばれ、腹膜に炎症が及んでいるサインです。"
+        },
+        {
+          "id": "loss_of_appetite_sudden",
+          "question": "食欲が全くなくなりましたか？",
+          "weight": 0.8,
+          "explanation": "多くの場合、痛みの前に食欲不振が現れます。"
+        },
+        {
+          "id": "nausea_vomiting_append",
+          "question": "吐き気や、実際に吐いてしまうことがありますか？",
+          "weight": 0.7,
+          "explanation": "腹膜への刺激による反射的な症状です。"
+        },
+        {
+          "id": "low_grade_fever_append",
+          "question": "37度〜38度程度の熱がありますか？",
+          "weight": 0.6,
+          "explanation": "細菌による炎症反応としての発熱です。"
+        },
+        {
+          "id": "pain_walking_vibration",
+          "question": "歩くと響いたり、お腹をかばって前かがみになりますか？",
+          "weight": 0.8,
+          "explanation": "振動がお腹の炎症部に響くためです。"
+        },
+        {
+          "id": "constipation_gas_append",
+          "question": "便が出にくい、またはおならが出なくなりましたか？",
+          "weight": 0.5,
+          "explanation": "腸の動きが一時的に低下することがあります。"
+        },
+        {
+          "id": "psoas_sign",
+          "question": "右足を後ろにそらしたり、持ち上げたりすると痛みが強まりますか？",
+          "weight": 0.8,
+          "explanation": "筋肉の動きが虫垂周辺を刺激するためです。"
+        },
+        {
+          "id": "pain_worse_over_time",
+          "question": "痛みは数時間かけて、だんだん強くなっていますか？",
+          "weight": 0.8,
+          "explanation": "進行性の炎症であることを示します。"
+        }
+      ]
+    },
+    {
+      "id": "dyslipidemia",
+      "name": "脂質異常症（高コレステロール血症）",
+      "department": "内科",
+      "description": "血液中のコレステロールや中性脂肪が基準値から外れた状態です。放置すると動脈硬化の原因になります。",
+      "baseProbability": {
+        "male": 0.25,
+        "female": 0.2
+      },
+      "ageModifier": {
+        "0-10": 0.1,
+        "11-20": 0.3,
+        "21-40": 0.8,
+        "41-60": 1.5,
+        "61+": 1.8
+      },
+      "symptoms": [
+        {
+          "id": "no_subjective_symptoms",
+          "question": "自覚症状は特にありませんか？",
+          "weight": 1.0,
+          "explanation": "この病気は血管が詰まるまで、ほぼ無症状です。"
+        },
+        {
+          "id": "xanthoma_eyelid",
+          "question": "まぶたに黄色い小さな盛り上がり（黄色腫）がありますか？",
+          "weight": 0.7,
+          "explanation": "コレステロールが皮膚に沈着したものです。"
+        },
+        {
+          "id": "achilles_tendon_thickening",
+          "question": "アキレス腱が以前より太くなった気がしますか？",
+          "weight": 0.8,
+          "explanation": "家族性高コレステロール血症で見られる特徴的な所見です。"
+        },
+        {
+          "id": "corneal_arcus",
+          "question": "黒目の周りに白い輪のようなものが見えますか？",
+          "weight": 0.6,
+          "explanation": "「角膜環」と呼ばれ、脂質沈着のサインです。"
+        },
+        {
+          "id": "obesity_waist",
+          "question": "お腹周りが気になる（メタボリックシンドローム）ですか？",
+          "weight": 0.7,
+          "explanation": "肥満は脂質異常症の大きなリスク要因です。"
+        },
+        {
+          "id": "lifestyle_oily_food",
+          "question": "油っこい食べ物や甘いものが大好きですか？",
+          "weight": 0.7,
+          "explanation": "食生活は血液データに直結します。"
+        },
+        {
+          "id": "lack_of_exercise_lipid",
+          "question": "ほとんど運動をしない生活ですか？",
+          "weight": 0.6,
+          "explanation": "脂質の燃焼不足を招きます。"
+        },
+        {
+          "id": "family_history_heart_disease",
+          "question": "家族に心筋梗塞や脳卒中になった人がいますか？",
+          "weight": 0.7,
+          "explanation": "遺伝的体質が強く関係することがあります。"
+        },
+        {
+          "id": "smoking_habit",
+          "question": "タバコを吸いますか？",
+          "weight": 0.6,
+          "explanation": "喫煙は善玉コレステロールを減らし、動脈硬化を早めます。"
+        },
+        {
+          "id": "high_test_results",
+          "question": "健康診断でLDL値や中性脂肪値が高いと指摘されましたか？",
+          "weight": 1.0,
+          "explanation": "数値こそがこの病気の唯一の診断根拠です。"
+        }
+      ]
+    },
+    {
+      "id": "gout",
+      "name": "痛風",
+      "department": "整形外科・内科",
+      "description": "血液中の尿酸が高くなり、足の親指などの関節が突然激烈に痛む病気です。男性に圧倒的に多いです。",
+      "baseProbability": {
+        "male": 0.08,
+        "female": 0.01
+      },
+      "ageModifier": {
+        "0-10": 0.0,
+        "11-20": 0.1,
+        "21-40": 1.0,
+        "41-60": 1.5,
+        "61+": 1.2
+      },
+      "symptoms": [
+        {
+          "id": "sudden_severe_joint_pain",
+          "question": "ある日突然、関節が「風が吹くだけで痛い」ほどの激痛に襲われましたか？",
+          "weight": 1.0,
+          "explanation": "名前の由来にもなっている、非常に強い痛みが特徴です。"
+        },
+        {
+          "id": "pain_great_toe",
+          "question": "痛むのは、足の親指の付け根ですか？",
+          "weight": 1.0,
+          "explanation": "痛風発作の約7割がこの場所から始まります。"
+        },
+        {
+          "id": "joint_redness_heat",
+          "question": "関節が赤く腫れ上がり、熱を持っていますか？",
+          "weight": 0.9,
+          "explanation": "激しい炎症反応が起きています。"
+        },
+        {
+          "id": "night_onset_gout",
+          "question": "発作は夜中から明け方にかけて起きましたか？",
+          "weight": 0.8,
+          "explanation": "夜間の脱水や体温低下で尿酸が結晶化しやすいためです。"
+        },
+        {
+          "id": "high_uric_acid_history",
+          "question": "以前から尿酸値が高いと指摘されていましたか？",
+          "weight": 0.9,
+          "explanation": "高尿酸血症が痛風の前提条件です。"
+        },
+        {
+          "id": "alcohol_consumption",
+          "question": "お酒（特にビール）をたくさん飲みますか？",
+          "weight": 0.8,
+          "explanation": "アルコールは尿酸値を上げ、排出を妨げます。"
+        },
+        {
+          "id": "past_episodes_gout",
+          "question": "過去にも同じような痛みが数日で治まったことがありますか？",
+          "weight": 0.9,
+          "explanation": "発作を繰り返すのが痛風の特徴です。"
+        },
+        {
+          "id": "purine_rich_diet",
+          "question": "肉や魚の干物など、プリン体の多い食事を好みますか？",
+          "weight": 0.7,
+          "explanation": "食事からのプリン体摂取は尿酸値を上昇させます。"
+        },
+        {
+          "id": "swelling_without_injury",
+          "question": "ぶつけたり捻ったりしていないのに、急に腫れましたか？",
+          "weight": 0.8,
+          "explanation": "外傷がないことが内科的な関節炎の証拠です。"
+        },
+        {
+          "id": "relief_within_week",
+          "question": "痛みは1週間から10日ほどで嘘のように消えましたか？",
+          "weight": 0.8,
+          "explanation": "治療しなくても一度は治まるのが痛風発作の経過です。"
+        }
+      ]
+    },
+    {
+      "id": "food_poisoning",
+      "name": "食中毒",
+      "department": "内科",
+      "description": "細菌やウイルス、毒素が付着した食べ物を食べることで起こる急性の健康被害です。",
+      "baseProbability": {
+        "male": 0.05,
+        "female": 0.05
+      },
+      "ageModifier": {
+        "0-10": 1.2,
+        "11-20": 1.1,
+        "21-40": 1.0,
+        "41-60": 0.9,
+        "61+": 1.1
+      },
+      "symptoms": [
+        {
+          "id": "severe_diarrhea_sudden",
+          "question": "何度も激しい下痢（水のような便）が出ますか？",
+          "weight": 0.9,
+          "explanation": "腸内の毒素を排出しようとする反応です。"
+        },
+        {
+          "id": "vomiting_sudden",
+          "question": "激しく吐いてしまいますか？",
+          "weight": 0.9,
+          "explanation": "胃の中の有害物質を取り除こうとする反応です。"
+        },
+        {
+          "id": "abdominal_cramps_food",
+          "question": "お腹がよじれるような強い痛みがありますか？",
+          "weight": 0.8,
+          "explanation": "腸が激しく動いているサインです。"
+        },
+        {
+          "id": "fever_food_poisoning",
+          "question": "38度以上の熱が出ることがありますか？",
+          "weight": 0.7,
+          "explanation": "感染性の食中毒（細菌性など）では発熱を伴います。"
+        },
+        {
+          "id": "symptom_onset_after_meal",
+          "question": "食事の数時間後〜数日後に症状が出ましたか？",
+          "weight": 1.0,
+          "explanation": "摂取から発症までの時間（潜伏期）は原因究明に重要です。"
+        },
+        {
+          "id": "suspect_food_item",
+          "question": "加熱不十分な肉、生の魚介類などを食べましたか？",
+          "weight": 0.9,
+          "explanation": "特定の食材が原因であることが多いです。"
+        },
+        {
+          "id": "shared_symptoms",
+          "question": "一緒に食事をした人も、同じような症状が出ていますか？",
+          "weight": 1.0,
+          "explanation": "複数人の発症は食中毒を強く示唆します。"
+        },
+        {
+          "id": "bloody_stool_food",
+          "question": "便に血が混じることがありますか？",
+          "weight": 0.8,
+          "explanation": "カンピロバクターやO-157などの深刻な感染で見られます。"
+        },
+        {
+          "id": "dehydration_weakness",
+          "question": "脱水症状で、口が乾き、フラフラしますか？",
+          "weight": 0.7,
+          "explanation": "水分流出による危険な状態です。"
+        },
+        {
+          "id": "muscle_pain_chills_food",
+          "question": "下痢以外に、筋肉痛やひどい寒気がありますか？",
+          "weight": 0.5,
+          "explanation": "全身感染の兆候です。"
+        }
+      ]
+    },
+    {
+      "id": "angina_pectoris",
+      "name": "狭心症",
+      "department": "内科・循環器内科",
+      "description": "心臓の筋肉に酸素を送る血管が狭くなり、一時的に胸の痛みや圧迫感が出る病気です。",
+      "baseProbability": {
+        "male": 0.05,
+        "female": 0.03
+      },
+      "ageModifier": {
+        "0-10": 0.0,
+        "11-20": 0.1,
+        "21-40": 0.5,
+        "41-60": 1.5,
+        "61+": 2.0
+      },
+      "symptoms": [
+        {
+          "id": "chest_pressure_angina",
+          "question": "胸が締め付けられる、または重いものが乗っているような圧迫感がありますか？",
+          "weight": 1.0,
+          "explanation": "心筋の酸素不足による典型的な「絞扼感」です。"
+        },
+        {
+          "id": "effort_angina",
+          "question": "階段を上ったり、重い荷物を持った時に痛みが出ますか？",
+          "weight": 1.0,
+          "explanation": "労作時に心臓の負担が増えて症状が出るのが一般的です。"
+        },
+        {
+          "id": "short_duration_pain",
+          "question": "痛みは数分間（通常15分以内）で収まりますか？",
+          "weight": 0.9,
+          "explanation": "一時的な血流不足のため、休むと治るのが特徴です。"
+        },
+        {
+          "id": "referred_pain_left_arm",
+          "question": "左肩や左腕、または顎のあたりまで痛むことがありますか？",
+          "weight": 0.8,
+          "explanation": "「放散痛」と呼ばれ、心臓の痛みが別の場所で感じられます。"
+        },
+        {
+          "id": "relief_with_rest",
+          "question": "安静にしていると症状が消えますか？",
+          "weight": 0.9,
+          "explanation": "心臓の負担が減れば酸素の需給が安定するためです。"
+        },
+        {
+          "id": "cold_sweat_chest_pain",
+          "question": "痛みの最中、冷や汗が出ますか？",
+          "weight": 0.8,
+          "explanation": "自律神経の強い反応を伴う、危険なサインです。"
+        },
+        {
+          "id": "shortness_of_breath_angina",
+          "question": "胸の痛みと同時に、息苦しさを感じますか？",
+          "weight": 0.7,
+          "explanation": "心機能の一時的な低下によるものです。"
+        },
+        {
+          "id": "history_lifestyle_diseases",
+          "question": "高血圧、糖尿病、脂質異常症を患っていますか？",
+          "weight": 0.7,
+          "explanation": "これらは動脈硬化を早める大きなリスク要因です。"
+        },
+        {
+          "id": "smoker_angina",
+          "question": "喫煙の習慣がありますか？",
+          "weight": 0.6,
+          "explanation": "タバコは血管を収縮させ、動脈硬化を促進します。"
+        },
+        {
+          "id": "symptoms_in_cold",
+          "question": "冬の朝など、寒い場所に出た時に起きやすいですか？",
+          "weight": 0.7,
+          "explanation": "寒冷刺激は血管を収縮させ、心臓の負荷を増やします。"
+        }
+      ]
+    },
+    {
+      "id": "heat_stroke",
+      "name": "熱中症",
+      "department": "内科・救急科",
+      "description": "暑さによって体温調節ができなくなり、体に熱がこもって様々な不調が出る状態です。",
+      "baseProbability": {
+        "male": 0.05,
+        "female": 0.05
+      },
+      "ageModifier": {
+        "0-10": 1.5,
+        "11-20": 1.2,
+        "21-40": 0.8,
+        "41-60": 1.0,
+        "61+": 1.5
+      },
+      "symptoms": [
+        {
+          "id": "high_ambient_temp",
+          "question": "暑い場所、または日差しの強い場所に長時間いましたか？",
+          "weight": 1.0,
+          "explanation": "環境要因が診断の前提となります。"
+        },
+        {
+          "id": "dizziness_standing_heat",
+          "question": "めまい、立ちくらみ、顔のほてりがありますか？",
+          "weight": 0.9,
+          "explanation": "軽症（I度）の初期症状です。"
+        },
+        {
+          "id": "muscle_cramps_heat",
+          "question": "足が攣ったり、筋肉がピクピクしたり（こむら返り）しますか？",
+          "weight": 0.9,
+          "explanation": "塩分（電解質）の不足による症状です。"
+        },
+        {
+          "id": "headache_nausea_heat",
+          "question": "頭痛、吐き気、体がぐったりする感じがありますか？",
+          "weight": 0.9,
+          "explanation": "中等症（II度）へ進行しているサインです。"
+        },
+        {
+          "id": "excessive_sweating_or_none",
+          "question": "異常に汗をかいている、あるいは暑いのに汗が出ていませんか？",
+          "weight": 0.8,
+          "explanation": "体温調節機能の異常を示しています。"
+        },
+        {
+          "id": "high_body_temp_heat",
+          "question": "体が異常に熱くなっていますか？",
+          "weight": 0.8,
+          "explanation": "深部体温の上昇が起きています。"
+        },
+        {
+          "id": "confusion_heat",
+          "question": "意識がぼーっとする、受け答えがおかしいですか？",
+          "weight": 1.0,
+          "explanation": "重症（III度）のサインで、直ちに救急搬送が必要です。"
+        },
+        {
+          "id": "thirst_heat",
+          "question": "喉が非常に乾いていますか？",
+          "weight": 0.7,
+          "explanation": "脱水状態の主観的症状です。"
+        },
+        {
+          "id": "lack_of_fluid_intake",
+          "question": "今日、あまり水分を摂っていませんか？",
+          "weight": 0.7,
+          "explanation": "発症リスクを高める要因です。"
+        },
+        {
+          "id": "staggering_gait",
+          "question": "まっすぐ歩けなかったり、ふらついたりしますか？",
+          "weight": 0.9,
+          "explanation": "脳への影響が出始めている深刻な状態です。"
+        }
+      ]
+    },
+    {
+      "id": "dysmenorrhea",
+      "name": "月経困難症（生理痛）",
+      "department": "婦人科",
+      "description": "生理に伴って、日常生活に支障が出るほどの強い腹痛や腰痛などの症状が現れる状態です。",
+      "baseProbability": {
+        "male": 0.0,
+        "female": 0.25
+      },
+      "ageModifier": {
+        "0-10": 0.1,
+        "11-20": 1.5,
+        "21-40": 1.2,
+        "41-60": 0.5,
+        "61+": 0.0
+      },
+      "symptoms": [
+        {
+          "id": "lower_abdominal_pain_period",
+          "question": "生理の直前や期間中に、下腹部が強く痛みますか？",
+          "weight": 1.0,
+          "explanation": "子宮を収縮させる物質（プロスタグランジン）による痛みです。"
+        },
+        {
+          "id": "back_pain_period",
+          "question": "生理中にひどい腰痛がありますか？",
+          "weight": 0.9,
+          "explanation": "骨盤周囲のうっ血や神経刺激によるものです。"
+        },
+        {
+          "id": "nausea_period",
+          "question": "お腹の痛みと一緒に、吐き気や胃のむかつきがありますか？",
+          "weight": 0.7,
+          "explanation": "ホルモン物質が全身に影響を与えます。"
+        },
+        {
+          "id": "headache_period",
+          "question": "生理前や生理中に頭痛が起きやすいですか？",
+          "weight": 0.7,
+          "explanation": "血管の緊張の変化が関係します。"
+        },
+        {
+          "id": "fatigue_period",
+          "question": "生理中は体がだるく、何もしたくないと感じますか？",
+          "weight": 0.8,
+          "explanation": "精神的・身体的な不調の蓄積です。"
+        },
+        {
+          "id": "diarrhea_period",
+          "question": "生理の時に、お腹がゆるくなりやすい（下痢）ですか？",
+          "weight": 0.6,
+          "explanation": "プロスタグランジンが腸を刺激するためです。"
+        },
+        {
+          "id": "pain_medicine_needed",
+          "question": "鎮痛薬を飲まないと、立っていられないほど辛いですか？",
+          "weight": 0.9,
+          "explanation": "症状の重さを測る指標です。"
+        },
+        {
+          "id": "gradual_pain_increase",
+          "question": "年々、生理痛がひどくなっている気がしますか？",
+          "weight": 0.8,
+          "explanation": "子宮内膜症などの病気が隠れている可能性があります。"
+        },
+        {
+          "id": "irritability_before_period",
+          "question": "生理の数日前から、イライラや気分の落ち込みがありますか？",
+          "weight": 0.7,
+          "explanation": "PMS（月経前症候群）との合併が多いです。"
+        },
+        {
+          "id": "heavy_bleeding_clots",
+          "question": "生理の量が多く、レバーのような塊が出ますか？",
+          "weight": 0.7,
+          "explanation": "子宮筋腫などの異常がある際に見られることがあります。"
+        }
+      ]
+    },
+    {
+      "id": "constipation",
+      "name": "慢性便秘症",
+      "department": "内科・胃腸内科",
+      "description": "排便の回数が少ない、または便を出すのが困難で不快感が続く状態です。",
+      "baseProbability": {
+        "male": 0.1,
+        "female": 0.2
+      },
+      "ageModifier": {
+        "0-10": 0.5,
+        "11-20": 0.8,
+        "21-40": 1.0,
+        "41-60": 1.2,
+        "61+": 1.5
+      },
+      "symptoms": [
+        {
+          "id": "infrequent_defecation",
+          "question": "排便が週に3回未満ですか？",
+          "weight": 1.0,
+          "explanation": "回数は便秘診断の客観的な基準の一つです。"
+        },
+        {
+          "id": "straining_defecation",
+          "question": "便を出す時に、常に強くイキまないと出ませんか？",
+          "weight": 0.9,
+          "explanation": "便の硬さや排出能力の低下を示します。"
+        },
+        {
+          "id": "hard_stool_const",
+          "question": "便が硬く、コロコロしたりカチカチだったりしますか？",
+          "weight": 0.9,
+          "explanation": "水分不足や滞留時間の長さを示します。"
+        },
+        {
+          "id": "incomplete_evacuation_const",
+          "question": "出した後も「まだ残っている感じ（残便感）」がありますか？",
+          "weight": 0.9,
+          "explanation": "スッキリ出ない不快感は便秘症の重要な症状です。"
+        },
+        {
+          "id": "abdominal_distension",
+          "question": "お腹が張って苦しい、パンパンな感じがしますか？",
+          "weight": 0.8,
+          "explanation": "腸内に便やガスが溜まっている状態です。"
+        },
+        {
+          "id": "abdominal_pain_const",
+          "question": "お腹の左下あたりに痛みを感じることがありますか？",
+          "weight": 0.6,
+          "explanation": "S状結腸に便が溜まると痛みが出やすいです。"
+        },
+        {
+          "id": "decreased_appetite_const",
+          "question": "便が出ないと食欲が落ちますか？",
+          "weight": 0.5,
+          "explanation": "腸の停滞が胃の働きにも影響します。"
+        },
+        {
+          "id": "skin_breakouts_const",
+          "question": "便秘が続くと肌荒れや吹き出物が出ますか？",
+          "weight": 0.5,
+          "explanation": "自律神経の影響や老廃物の代謝に関係します。"
+        },
+        {
+          "id": "frequent_gas_const",
+          "question": "おならがよく出たり、臭いがきつかったりしますか？",
+          "weight": 0.6,
+          "explanation": "腸内細菌のバランスが乱れているサインです。"
+        },
+        {
+          "id": "manual_maneuvers",
+          "question": "指で押したりなど、補助をしないと出せないことがありますか？",
+          "weight": 0.8,
+          "explanation": "排便困難症が重い状態であることを示します。"
+        }
+      ]
+    }
+  ],
+  "emergencyChecks": [
+    {
+      "id": "severe_chest_pain",
+      "label": "激しい胸の痛み・圧迫感",
+      "description": "突然の激痛、締め付けられるような痛みが15分以上続く場合。心筋梗塞の恐れがあります。",
+      "action": "119に電話"
+    },
+    {
+      "id": "severe_dyspnea",
+      "label": "呼吸が非常に苦しい",
+      "description": "肩で息をしている、話すのも辛い、顔色が真っ青。酸素不足の可能性があります。",
+      "action": "119に電話"
+    },
+    {
+      "id": "loss_of_consciousness",
+      "label": "意識がもうろうとしている",
+      "description": "呼びかけに反応が薄い、つじつまの合わないことを言う、ぐったりして起きない。",
+      "action": "119に電話"
+    },
+    {
+      "id": "stroke_signs",
+      "label": "体の片側が動かない・しびれる",
+      "description": "顔の半分が下がる、片方の腕に力が入らない、言葉がもつれる。脳卒中のサインです。",
+      "action": "119に電話"
+    },
+    {
+      "id": "thunderclap_headache",
+      "label": "突然の激しい頭痛",
+      "description": "「バットで殴られたような」今までに経験したことのない急激な激痛。くも膜下出血の疑い。",
+      "action": "119に電話"
+    },
+    {
+      "id": "massive_bleeding",
+      "label": "大量の出血が止まらない",
+      "description": "傷口を強く押さえても血が止まらない、吐血、下血。失血死の危険があります。",
+      "action": "119に電話"
+    },
+    {
+      "id": "acute_abdomen",
+      "label": "激しい腹痛で動けない",
+      "description": "お腹を抱えてうずくまるような痛み、触れるだけで激痛が走る。腹膜炎などの疑い。",
+      "action": "#7119に相談"
+    },
+    {
+      "id": "prolonged_high_fever",
+      "label": "39度以上の高熱が3日以上続いている",
+      "description": "水分が摂れない、意識が朦朧とする、強いだるさを伴う。重症感染症の疑い。",
+      "action": "#7119に相談"
+    }
+  ]
+}

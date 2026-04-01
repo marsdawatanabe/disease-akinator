@@ -1,26 +1,71 @@
 @import "tailwindcss";
 
+/* カラーテーマ変数 */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --color-primary: #005C55;
+  --color-primary-variant: #0F766E;
+  --color-background: #F7F9FB;
+  --color-surface: #FFFFFF;
+  --color-surface-container-low: #F2F4F6;
+  --color-text-primary: #191C1E;
+  --color-text-secondary: #3E4947;
+  --color-error: #BA1A1A;
+  --color-tertiary: #7F4025;
+  --color-tertiary-container: #FFDBCE;
+
+  /* フォント */
+  --font-heading: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif;
+  --font-body: var(--font-inter), "Inter", sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ベーススタイル */
+html {
+  font-size: 18px;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* アコーディオンアニメーション */
+@keyframes accordion-down {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+  }
+}
+
+@keyframes accordion-up {
+  from {
+    height: var(--radix-accordion-content-height);
+  }
+  to {
+    height: 0;
+  }
+}
+
+.animate-accordion-down {
+  animation: accordion-down 0.2s ease-out;
+}
+
+.animate-accordion-up {
+  animation: accordion-up 0.2s ease-out;
+}
+
+/* prefers-reduced-motion対応 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
