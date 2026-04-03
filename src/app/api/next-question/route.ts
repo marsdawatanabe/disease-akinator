@@ -7,6 +7,7 @@ interface RequestBody {
   answers: Array<{ question: string; answer: "yes" | "no" | "unknown" }>;
   ageRange: string;
   gender: string;
+  emergencySymptoms?: string[];
 }
 
 // 目的: Geminiが返す質問オブジェクトの型
@@ -33,7 +34,7 @@ interface GeminiResult {
 
 // 目的: GeminiへのプロンプトをQ&A履歴と属性情報から組み立てる
 function buildPrompt(body: RequestBody): string {
-  const { answers, ageRange, gender } = body;
+  const { answers, ageRange, gender, emergencySymptoms } = body;
 
   // 目的: 性別を日本語に変換する
   const genderLabel =
@@ -73,7 +74,14 @@ function buildPrompt(body: RequestBody): string {
 ## ユーザー情報
 - 年齢: ${ageRange}
 - 性別: ${genderLabel}
-
+${
+  emergencySymptoms && emergencySymptoms.length > 0
+    ? `
+## 緊急チェックで報告された症状（重要: 診断時に必ず考慮すること）
+${emergencySymptoms.map((s) => `- ${s}`).join("\n")}
+`
+    : ""
+}
 ## これまでの回答
 ${answerHistory}
 

@@ -112,6 +112,7 @@ export default function QuestionsPage() {
             answers: currentState.answers,
             ageRange: session?.ageRange ?? "21-40",
             gender: session?.gender ?? "unspecified",
+            emergencySymptoms: JSON.parse(localStorage.getItem("akinator_emergency_symptoms") ?? "[]"),
           }),
         });
 

@@ -33,8 +33,17 @@ export default function EmergencyPage() {
   // 1つでもチェックされていれば緊急状態と判定
   const hasEmergency = checkedItems.size > 0;
 
-  // 目的: ユーザーが「該当なし」を押して質問画面へ遷移する
+  // 目的: チェック済みの緊急症状をlocalStorageに保存して質問画面へ遷移する
   const handleProceed = () => {
+    // 目的: 緊急チェックで選んだ症状を質問画面に引き継ぐ
+    if (checkedItems.size > 0) {
+      const checkedLabels = EMERGENCY_SYMPTOMS
+        .filter((s) => checkedItems.has(s.id))
+        .map((s) => s.label);
+      localStorage.setItem("akinator_emergency_symptoms", JSON.stringify(checkedLabels));
+    } else {
+      localStorage.removeItem("akinator_emergency_symptoms");
+    }
     router.push("/questions");
   };
 
