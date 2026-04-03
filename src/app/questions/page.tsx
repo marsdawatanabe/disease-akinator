@@ -94,48 +94,95 @@ export default function QuestionsPage() {
   const [bayesState, setBayesState] = useState<BayesianState | null>(null);
   const [currentQuestion, setCurrentQuestion] = useState<NextQuestion | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isLoadingQuestion, setIsLoadingQuestion] = useState(false);
+  // 目的: セッション情報を保持してAPI呼び出し時に渡す
+  const [sessionInfo, setSessionInfo] = useState<{ ageRange: string; gender: string } | null>(null);
+
+  // 目的: Gemini APIから次の質問を取得する。失敗時はローカルのエントロピー計算にフォールバック
+  const fetchNextQuestion = useCallback(
+    async (
+      state: BayesianState,
+      session: { ageRange: string; gender: string } | null
+    ): Promise<NextQuestion | null> => {
+      try {
+        const res = await fetch("/api/next-question", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            answers: state.answers,
+            probabilities: state.probabilities,
+            questionCount: state.questionCount,
+            ageRange: session?.ageRange ?? "21-40",
+            gender: session?.gender ?? "other",
+          }),
+        });
+        const data = await res.json();
+        if (data.question && !data.fallbackToLocal) {
+          return data.question as NextQuestion;
+        }
+      } catch {
+        // API障害時は無視してフォールバック
+      }
+      // 目的: API失敗時はローカルのエントロピーベース選択にフォールバック
+      return selectNextQuestion(state);
+    },
+    []
+  );
 
   // 目的: localStorageからセッション・ベイズ状態を復元または初期化する
   useEffect(() => {
-    try {
-      // ベイズ状態の復元を試みる（途中離脱→復帰対応）
-      const savedBayes = localStorage.getItem(BAYES_STATE_KEY);
-      if (savedBayes) {
-        const restored = deserializeState(savedBayes);
-        if (restored) {
-          setBayesState(restored);
-          setCurrentQuestion(selectNextQuestion(restored));
-          setIsLoaded(true);
+    const init = async () => {
+      try {
+        // セッション情報を読み取る
+        const raw = localStorage.getItem(SESSION_KEY);
+        let session: { ageRange: string; gender: string } | null = null;
+        if (raw) {
+          const parsed: SessionData = JSON.parse(raw);
+          session = { ageRange: parsed.ageGroup, gender: parsed.gender };
+          setSessionInfo(session);
+        }
+
+        // ベイズ状態の復元を試みる（途中離脱→復帰対応）
+        const savedBayes = localStorage.getItem(BAYES_STATE_KEY);
+        if (savedBayes) {
+          const restored = deserializeState(savedBayes);
+          if (restored) {
+            setBayesState(restored);
+            setIsLoadingQuestion(true);
+            const q = await fetchNextQuestion(restored, session);
+            setCurrentQuestion(q);
+            setIsLoadingQuestion(false);
+            setIsLoaded(true);
+            return;
+          }
+        }
+
+        if (!raw) {
+          router.push("/");
           return;
         }
-      }
 
-      // 新規: セッション情報（年齢・性別）を読み取って初期化
-      const raw = localStorage.getItem(SESSION_KEY);
-      if (!raw) {
-        // セッションがない場合はスタート画面へ戻す
+        const ageRange = session!.ageRange as AgeRange;
+        const gender =
+          session!.gender === "male"
+            ? "male"
+            : session!.gender === "female"
+            ? "female"
+            : "other";
+
+        const initialState = createInitialState(ageRange, gender as Gender);
+        setBayesState(initialState);
+        setIsLoadingQuestion(true);
+        const q = await fetchNextQuestion(initialState, session);
+        setCurrentQuestion(q);
+        setIsLoadingQuestion(false);
+      } catch {
         router.push("/");
-        return;
       }
-
-      const session: SessionData = JSON.parse(raw);
-      const ageRange = session.ageGroup as AgeRange;
-      const gender =
-        session.gender === "male"
-          ? "male"
-          : session.gender === "female"
-          ? "female"
-          : "other";
-
-      const initialState = createInitialState(ageRange, gender as Gender);
-      setBayesState(initialState);
-      setCurrentQuestion(selectNextQuestion(initialState));
-    } catch {
-      // 復元失敗時はスタート画面へ
-      router.push("/");
-    }
-    setIsLoaded(true);
-  }, [router]);
+      setIsLoaded(true);
+    };
+    init();
+  }, [router, fetchNextQuestion]);
 
   // 目的: ベイズ状態をlocalStorageに保存して途中離脱に備える
   const saveBayesState = useCallback((state: BayesianState) => {
@@ -162,9 +209,9 @@ export default function QuestionsPage() {
     [router]
   );
 
-  // 目的: ユーザーが回答を選択し、確率を更新して次の質問へ進む
+  // 目的: ユーザーが回答を選択し、確率を更新して次の質問へ進む（AI質問選択）
   const handleAnswer = useCallback(
-    (answer: Answer) => {
+    async (answer: Answer) => {
       if (!bayesState || !currentQuestion) return;
 
       // 回答前の確率をスナップショットとして履歴に追加
@@ -202,19 +249,22 @@ export default function QuestionsPage() {
         return;
       }
 
-      // 未回答症状が尽きた場合も結果画面へ遷移する
-      const nextQuestion = selectNextQuestion(newState);
+      // 目的: Gemini APIで次の質問を取得（ローディング表示付き）
+      setIsLoadingQuestion(true);
+      setBayesState(newState);
+      saveBayesState(newState);
+
+      const nextQuestion = await fetchNextQuestion(newState, sessionInfo);
+      setIsLoadingQuestion(false);
+
       if (!nextQuestion) {
         navigateToResults(newState);
         return;
       }
 
-      // 状態を保存して次の質問へ
-      setBayesState(newState);
-      saveBayesState(newState);
       setCurrentQuestion(nextQuestion);
     },
-    [bayesState, currentQuestion, navigateToResults, saveBayesState]
+    [bayesState, currentQuestion, navigateToResults, saveBayesState, fetchNextQuestion, sessionInfo]
   );
 
   // 目的: ユーザーが前の質問に戻る（最初の質問の場合は緊急チェックへ遷移）
@@ -322,29 +372,39 @@ export default function QuestionsPage() {
             <p className="text-xs font-semibold text-[#005C55] uppercase tracking-wider mb-3">
               質問 {progress} / {total}
             </p>
-            <h2
-              className="text-2xl font-extrabold text-[#191C1E] leading-snug mb-6"
-              style={{ fontFamily: "var(--font-heading)" }}
-            >
-              {currentQuestion.question}
-            </h2>
+            {isLoadingQuestion ? (
+              // 目的: AI質問選択中のローディング表示
+              <div className="flex flex-col items-center gap-3 py-6">
+                <div className="w-6 h-6 rounded-full border-3 border-[#005C55] border-t-transparent animate-spin" />
+                <p className="text-sm text-[#3E4947]">AIが次の質問を考えています…</p>
+              </div>
+            ) : (
+              <>
+                <h2
+                  className="text-2xl font-extrabold text-[#191C1E] leading-snug mb-6"
+                  style={{ fontFamily: "var(--font-heading)" }}
+                >
+                  {currentQuestion.question}
+                </h2>
 
-            {/* 「なぜこの質問？」アコーディオン（DBのexplanationを表示） */}
-            <Accordion type="single" collapsible>
-              <AccordionItem value="reason">
-                <AccordionTrigger className="text-[#005C55] text-sm font-medium">
-                  <span className="flex items-center gap-2">
-                    <HelpCircle className="w-4 h-4" />
-                    なぜこの質問？
-                  </span>
-                </AccordionTrigger>
-                <AccordionContent>
-                  <p className="text-[#3E4947] text-sm leading-relaxed bg-[#F2F4F6] rounded-2xl p-4">
-                    {currentQuestion.explanation}
-                  </p>
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
+                {/* 「なぜこの質問？」アコーディオン（DBのexplanationを表示） */}
+                <Accordion type="single" collapsible>
+                  <AccordionItem value="reason">
+                    <AccordionTrigger className="text-[#005C55] text-sm font-medium">
+                      <span className="flex items-center gap-2">
+                        <HelpCircle className="w-4 h-4" />
+                        なぜこの質問？
+                      </span>
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      <p className="text-[#3E4947] text-sm leading-relaxed bg-[#F2F4F6] rounded-2xl p-4">
+                        {currentQuestion.explanation}
+                      </p>
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+              </>
+            )}
           </CardContent>
         </Card>
 
@@ -354,6 +414,7 @@ export default function QuestionsPage() {
             onClick={() => handleAnswer("yes")}
             variant="default"
             className="w-full h-14 text-base font-bold"
+            disabled={isLoadingQuestion}
           >
             はい
           </Button>
@@ -361,6 +422,7 @@ export default function QuestionsPage() {
             onClick={() => handleAnswer("no")}
             variant="outline"
             className="w-full h-14 text-base font-bold"
+            disabled={isLoadingQuestion}
           >
             いいえ
           </Button>
@@ -368,6 +430,7 @@ export default function QuestionsPage() {
             onClick={() => handleAnswer("unknown")}
             variant="secondary"
             className="w-full h-14 text-base font-bold text-[#3E4947]"
+            disabled={isLoadingQuestion}
           >
             わからない
           </Button>
