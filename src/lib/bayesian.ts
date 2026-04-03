@@ -35,7 +35,7 @@ const MAX_QUESTIONS = 15;
 const CONVERGENCE_THRESHOLD = 0.75;
 
 // 目的: 最低限この回数の質問に回答するまで収束判定をスキップする（早期終了防止）
-const MIN_QUESTIONS_BEFORE_CONVERGENCE = 5;
+const MIN_QUESTIONS_BEFORE_CONVERGENCE = 3;
 
 // 目的: 確率が0にならないようにする最小値（0除算防止）
 const MIN_PROBABILITY = 0.001;

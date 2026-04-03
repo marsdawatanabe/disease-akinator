@@ -130,11 +130,12 @@ ${candidateList}
 
     const ai = new GoogleGenAI({ apiKey });
     const response = await ai.models.generateContent({
-      model: "gemini-2.0-flash",
+      model: "gemini-2.5-flash",
       contents: prompt,
       config: {
         temperature: 0.3,
-        maxOutputTokens: 200,
+        maxOutputTokens: 500,
+        thinkingConfig: { thinkingBudget: 0 },
       },
     });
 
