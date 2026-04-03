@@ -42,17 +42,19 @@ export type Gender = "male" | "female" | "other";
 // 年齢レンジの型
 export type AgeRange = "0-10" | "11-20" | "21-40" | "41-60" | "61+";
 
-// 質問画面の状態（localStorageに保存）
-export interface QuestionState {
-  currentSymptomId: string;
-  answers: Record<string, Answer>;
-  probabilities: Record<string, number>;
+// 目的: Gemini API全面移行後の質問画面状態型（ベイズ推論の代替）
+export interface SimpleState {
+  // Q&A履歴（APIに毎回渡す）
+  answers: Array<{ question: string; answer: "yes" | "no" | "unknown" }>;
+  // 回答済み質問数
   questionCount: number;
+  // 「前の質問に戻る」用に質問文とexplanationを保持する
+  questionHistory: Array<{ question: string; explanation: string }>;
 }
 
 // 結果の各候補アイテム
 export interface ResultItem {
-  diseaseId: string;
+  diseaseId?: string;
   name: string;
   department: string;
   description: string;

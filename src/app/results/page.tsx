@@ -20,12 +20,9 @@ import {
 } from "@/components/ui/accordion";
 import type { ResultItem } from "@/types";
 
-// 目的: computeResultsが返すfallbackフラグを含む拡張型
-type ResultItemWithFallback = ResultItem & { fallback?: boolean };
-
 // localStorageのキー定数
 const SESSION_KEY = "akinator_session";
-const BAYES_STATE_KEY = "akinator_bayes_state";
+const AKINATOR_STATE_KEY = "akinator_state";
 const RESULTS_KEY = "akinator_results";
 
 // 関連度バーコンポーネント
@@ -48,19 +45,29 @@ function RelevanceBar({ value }: { value: number }) {
 export default function ResultsPage() {
   const router = useRouter();
   const [isLoaded, setIsLoaded] = useState(false);
-  const [results, setResults] = useState<ResultItemWithFallback[]>([]);
+  // 目的: Geminiが返した診断結果候補リストを保持する
+  const [results, setResults] = useState<ResultItem[]>([]);
+  // 目的: Q&A回答数を保持してフォールバック判定に使う
+  const [answerCount, setAnswerCount] = useState(0);
 
-  // 目的: ページロード時にlocalStorageから結果を読み込む
+  // 目的: ページロード時にlocalStorageから結果とQ&A数を読み込む
   useEffect(() => {
     try {
       const raw = localStorage.getItem(RESULTS_KEY);
       if (raw) {
-        const parsed: ResultItemWithFallback[] = JSON.parse(raw);
+        const parsed: ResultItem[] = JSON.parse(raw);
         setResults(parsed);
       } else {
         // 結果がない場合はスタート画面へ戻す
         router.push("/");
         return;
+      }
+
+      // 目的: akinator_stateが残っていればanswers数を取得してフォールバック判定に使う
+      const stateRaw = localStorage.getItem(AKINATOR_STATE_KEY);
+      if (stateRaw) {
+        const stateData = JSON.parse(stateRaw);
+        setAnswerCount(stateData?.answers?.length ?? 0);
       }
     } catch {
       router.push("/");
@@ -73,7 +80,7 @@ export default function ResultsPage() {
   const handleRestart = () => {
     try {
       localStorage.removeItem(SESSION_KEY);
-      localStorage.removeItem(BAYES_STATE_KEY);
+      localStorage.removeItem(AKINATOR_STATE_KEY);
       localStorage.removeItem(RESULTS_KEY);
     } catch {
       // localStorageが使えない環境では無視
@@ -93,8 +100,8 @@ export default function ResultsPage() {
   const topResult = results[0];
   const recommendedDepartment = topResult?.department ?? "内科";
 
-  // 目的: 全「わからない」など有効回答不足の場合にフォールバック表示を判定する
-  const isFallback = topResult?.fallback === true;
+  // 目的: 回答が少ない場合（2問以下）にフォールバックメッセージを表示する
+  const isFallback = answerCount <= 2;
 
   return (
     <main className="min-h-screen px-4 py-10">
@@ -148,7 +155,7 @@ export default function ResultsPage() {
           </h2>
 
           {results.map((candidate, index) => (
-            <Card key={candidate.diseaseId} className="bg-white">
+            <Card key={candidate.diseaseId ?? candidate.name} className="bg-white">
               <CardContent>
                 {/* 疾患名と関連度 */}
                 <div className="flex items-start justify-between gap-3 mb-3">

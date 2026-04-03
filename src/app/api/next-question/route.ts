@@ -1,180 +1,177 @@
-// 目的: Gemini APIを使って回答履歴から最適な次の質問を選択するAPI Route
+// 目的: Gemini APIに質問選択と診断結果生成をすべて委ねるAPI Route
 import { NextRequest, NextResponse } from "next/server";
 import { GoogleGenAI } from "@google/genai";
-import diseasesData from "@/data/diseases.json";
-import type { Disease, Answer } from "@/types";
 
-const DB = diseasesData as { diseases: Disease[]; emergencyChecks: unknown[] };
-
-// 目的: 全症状のID・質問文・所属疾患のマッピングを構築する
-function buildSymptomIndex() {
-  const symptoms: Array<{
-    symptomId: string;
-    question: string;
-    explanation: string;
-    diseaseId: string;
-    diseaseName: string;
-    weight: number;
-  }> = [];
-
-  for (const disease of DB.diseases) {
-    for (const symptom of disease.symptoms) {
-      symptoms.push({
-        symptomId: symptom.id,
-        question: symptom.question,
-        explanation: symptom.explanation,
-        diseaseId: disease.id,
-        diseaseName: disease.name,
-        weight: symptom.weight,
-      });
-    }
-  }
-  return symptoms;
+// 目的: リクエストボディの型定義
+interface RequestBody {
+  answers: Array<{ question: string; answer: "yes" | "no" | "unknown" }>;
+  ageRange: string;
+  gender: string;
 }
 
-const ALL_SYMPTOMS = buildSymptomIndex();
+// 目的: Geminiが返す質問オブジェクトの型
+interface GeminiQuestion {
+  type: "question";
+  question: string;
+  explanation: string;
+}
 
-export async function POST(request: NextRequest) {
-  try {
-    const body = await request.json();
-    const {
-      answers,
-      probabilities,
-      ageRange,
-      gender,
-    }: {
-      answers: Record<string, Answer>;
-      probabilities: Record<string, number>;
-      ageRange: string;
-      gender: string;
-      questionCount: number;
-    } = body;
+// 目的: Geminiが返す診断結果の各候補アイテムの型
+interface GeminiResultItem {
+  name: string;
+  department: string;
+  description: string;
+  relevance: number;
+  matchedSymptoms: string[];
+}
 
-    // 目的: 回答済みの症状IDを除外して未回答の症状リストを作る
-    const answeredIds = new Set(Object.keys(answers));
-    const unansweredSymptoms = ALL_SYMPTOMS.filter(
-      (s) => !answeredIds.has(s.symptomId)
-    );
-    // 目的: 同じsymptomIdの重複を除去する（複数疾患で共有される症状）
-    const uniqueUnanswered = Array.from(
-      new Map(unansweredSymptoms.map((s) => [s.symptomId, s])).values()
-    );
+// 目的: Geminiが返す診断結果オブジェクトの型
+interface GeminiResult {
+  type: "result";
+  results: GeminiResultItem[];
+}
 
-    if (uniqueUnanswered.length === 0) {
-      return NextResponse.json({ question: null });
-    }
+// 目的: GeminiへのプロンプトをQ&A履歴と属性情報から組み立てる
+function buildPrompt(body: RequestBody): string {
+  const { answers, ageRange, gender } = body;
 
-    // 目的: 現在の確率分布から上位10疾患を取得してAIに文脈を与える
-    const topDiseases = Object.entries(probabilities)
-      .sort(([, a], [, b]) => b - a)
-      .slice(0, 10)
-      .map(([id, prob]) => {
-        const disease = DB.diseases.find((d) => d.id === id);
-        return { id, name: disease?.name ?? id, probability: prob };
-      });
+  // 目的: 性別を日本語に変換する
+  const genderLabel =
+    gender === "male" ? "男性" : gender === "female" ? "女性" : "未指定";
 
-    // 目的: 回答履歴を人間が読める形にまとめる
-    const answerSummary = Object.entries(answers)
-      .map(([symptomId, answer]) => {
-        const symptom = ALL_SYMPTOMS.find((s) => s.symptomId === symptomId);
-        const answerLabel =
-          answer === "yes" ? "はい" : answer === "no" ? "いいえ" : "わからない";
-        return `- ${symptom?.question ?? symptomId}: ${answerLabel}`;
-      })
-      .join("\n");
+  // 目的: Q&A履歴を箇条書き形式に整形する
+  const answerHistory =
+    answers.length === 0
+      ? "(まだ回答なし)"
+      : answers
+          .map(({ question, answer }) => {
+            const label =
+              answer === "yes"
+                ? "はい"
+                : answer === "no"
+                ? "いいえ"
+                : "わからない";
+            return `- ${question}: ${label}`;
+          })
+          .join("\n");
 
-    // 目的: 未回答の症状リストをAIに渡す（最大30件に絞る）
-    const candidateList = uniqueUnanswered
-      .slice(0, 30)
-      .map(
-        (s) =>
-          `symptomId: "${s.symptomId}" | 質問: "${s.question}" | 関連疾患: ${s.diseaseName} | 重要度: ${s.weight}`
-      )
-      .join("\n");
+  return `あなたは症状チェッカーAIです。ユーザーの年齢・性別・回答履歴をもとに、次に聞くべき症状質問を1つ選ぶか、十分な情報が集まったら診断結果を出してください。
 
-    const prompt = `あなたは症状チェッカーの質問選択AIです。ユーザーの回答履歴と現在の疾患確率分布を見て、次に聞くべき最適な質問を1つ選んでください。
+## ルール
+1. 質問は「はい/いいえ/わからない」で答えられる形式にすること
+2. 質問には必ず「なぜこの質問をするのか」の簡単な説明をつけること
+3. 最大15問まで。3問以上回答があり十分に絞り込めたら早めに診断結果を出してよい
+4. 診断結果を出す時は、疾患候補を最大5つ、関連度（最大85%）付きで返すこと
+5. 各疾患には受診すべき科、簡単な説明、ユーザーの回答と一致した症状を含めること
+6. 100%や確定診断のような表現は絶対に使わないこと
+7. 日本語で回答すること
 
 ## ユーザー情報
 - 年齢: ${ageRange}
-- 性別: ${gender === "male" ? "男性" : gender === "female" ? "女性" : "未指定"}
+- 性別: ${genderLabel}
 
 ## これまでの回答
-${answerSummary || "(まだ回答なし)"}
-
-## 現在の疾患候補（確率上位）
-${topDiseases.map((d) => `- ${d.name}: ${(d.probability * 100).toFixed(1)}%`).join("\n")}
-
-## 未回答の質問候補
-${candidateList}
-
-## 選択基準
-1. 現在の上位候補をさらに絞り込める質問を優先する
-2. 「はい」でも「いいえ」でも情報が得られる質問が良い（片方の回答しか意味がない質問は避ける）
-3. 似たような質問を連続で聞かない（回答済みの質問と被る内容は避ける）
-4. ユーザーの年齢・性別に不自然な質問は避ける
+${answerHistory}
 
 ## 出力形式
-以下のJSON形式で**1つだけ**返してください。余計な説明は不要です。
+まだ質問が必要な場合:
 \`\`\`json
 {
-  "symptomId": "選んだ症状のID",
-  "reason": "この質問を選んだ理由（30字以内）"
+  "type": "question",
+  "question": "質問文",
+  "explanation": "なぜこの質問をするか"
+}
+\`\`\`
+
+診断結果を出す場合:
+\`\`\`json
+{
+  "type": "result",
+  "results": [
+    {
+      "name": "疾患名",
+      "department": "受診すべき科",
+      "description": "疾患の簡単な説明",
+      "relevance": 75,
+      "matchedSymptoms": ["一致した症状1", "一致した症状2"]
+    }
+  ]
 }
 \`\`\``;
+}
+
+// 目的: GeminiのレスポンステキストからJSONブロックを抽出してパースする
+function extractJson(text: string): GeminiQuestion | GeminiResult | null {
+  // コードブロック内のJSONを優先して抽出する
+  const codeBlockMatch = text.match(/```(?:json)?\s*([\s\S]*?)```/);
+  const jsonStr = codeBlockMatch ? codeBlockMatch[1].trim() : text.trim();
+
+  try {
+    const parsed = JSON.parse(jsonStr);
+    if (parsed.type === "question" || parsed.type === "result") {
+      return parsed as GeminiQuestion | GeminiResult;
+    }
+    return null;
+  } catch {
+    // コードブロックなしで生のJSONが返ってきた場合のフォールバック
+    const rawMatch = text.match(/\{[\s\S]*?"type"\s*:\s*"(?:question|result)"[\s\S]*?\}/);
+    if (!rawMatch) return null;
+    try {
+      const parsed = JSON.parse(rawMatch[0]);
+      if (parsed.type === "question" || parsed.type === "result") {
+        return parsed as GeminiQuestion | GeminiResult;
+      }
+    } catch {
+      // パース失敗は無視
+    }
+    return null;
+  }
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    const body: RequestBody = await request.json();
 
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
-      // 目的: APIキーがない場合はフォールバックとしてエントロピーベースの選択に戻す
-      return NextResponse.json({ question: null, fallbackToLocal: true });
+      return NextResponse.json(
+        { type: "error", message: "APIキーが設定されていません" },
+        { status: 500 }
+      );
     }
 
+    const prompt = buildPrompt(body);
+
+    // 目的: Gemini 2.5 Flashで質問または診断結果を生成する
     const ai = new GoogleGenAI({ apiKey });
     const response = await ai.models.generateContent({
       model: "gemini-2.5-flash",
       contents: prompt,
       config: {
         temperature: 0.3,
-        maxOutputTokens: 500,
+        maxOutputTokens: 1500,
         thinkingConfig: { thinkingBudget: 0 },
       },
     });
 
     const text = response.text ?? "";
+    const parsed = extractJson(text);
 
-    // 目的: AIレスポンスからJSONを抽出する
-    const jsonMatch = text.match(/\{[\s\S]*?"symptomId"\s*:\s*"([^"]+)"[\s\S]*?\}/);
-    if (!jsonMatch || !jsonMatch[1]) {
-      return NextResponse.json({ question: null, fallbackToLocal: true });
+    if (!parsed) {
+      console.error("Gemini JSON parse error. Raw text:", text);
+      return NextResponse.json(
+        { type: "error", message: "AIの応答を解析できませんでした" },
+        { status: 500 }
+      );
     }
 
-    const selectedSymptomId = jsonMatch[1];
-
-    // 目的: 選択された症状IDから質問情報を組み立てる
-    const selectedSymptom = ALL_SYMPTOMS.find(
-      (s) => s.symptomId === selectedSymptomId
-    );
-    if (!selectedSymptom) {
-      return NextResponse.json({ question: null, fallbackToLocal: true });
-    }
-
-    // 目的: AIの選択理由をexplanationに組み込む
-    const reasonMatch = text.match(/"reason"\s*:\s*"([^"]+)"/);
-    const aiReason = reasonMatch?.[1] ?? "";
-    const explanation = aiReason
-      ? `${selectedSymptom.explanation}（AI判断: ${aiReason}）`
-      : selectedSymptom.explanation;
-
-    return NextResponse.json({
-      question: {
-        symptomId: selectedSymptom.symptomId,
-        diseaseId: selectedSymptom.diseaseId,
-        question: selectedSymptom.question,
-        explanation,
-      },
-    });
+    // 目的: Geminiの応答をそのままクライアントに返す
+    return NextResponse.json(parsed);
   } catch (error) {
     console.error("Gemini API error:", error);
-    // 目的: API障害時はクライアント側のローカルロジックにフォールバック
-    return NextResponse.json({ question: null, fallbackToLocal: true });
+    return NextResponse.json(
+      { type: "error", message: "AI診断中にエラーが発生しました" },
+      { status: 500 }
+    );
   }
 }

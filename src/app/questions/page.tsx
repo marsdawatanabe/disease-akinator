@@ -1,4 +1,4 @@
-// 目的: ユーザーが「はい/いいえ/わからない」で答えながらベイジアン推論で症状を絞り込める質問画面
+// 目的: ユーザーが「はい/いいえ/わからない」で答えながらGemini AIが診断を進める質問画面
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
@@ -12,38 +12,30 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import {
-  createInitialState,
-  updateProbabilities,
-  selectNextQuestion,
-  computeResults,
-  shouldStop,
-  serializeState,
-  deserializeState,
-  MAX_QUESTIONS,
-  type BayesianState,
-  type NextQuestion,
-} from "@/lib/bayesian";
-import type { Answer, AgeRange, Gender } from "@/types";
-import diseasesData from "@/data/diseases.json";
-import type { Disease } from "@/types";
-
-// diseases.jsonの型アサーション（「前の質問に戻る」で使用）
-const DISEASES_DB = (diseasesData as { diseases: Disease[] }).diseases;
+import type { SimpleState, ResultItem } from "@/types";
 
 // localStorageのキー定数
 const SESSION_KEY = "akinator_session";
-const BAYES_STATE_KEY = "akinator_bayes_state";
+const AKINATOR_STATE_KEY = "akinator_state";
 const RESULTS_KEY = "akinator_results";
 
-// セッションデータの型定義（スタート画面が保存する形式）
+// Q&A最大数（プログレス表示用）
+const MAX_QUESTIONS = 15;
+
+// 目的: セッション情報（スタート画面が保存する形式）の型定義
 interface SessionData {
   ageGroup: string;
   gender: string;
   startedAt: string;
 }
 
-// 円形プログレスリングコンポーネント
+// 目的: APIから返ってくる現在の質問情報の型定義
+interface CurrentQuestion {
+  question: string;
+  explanation: string;
+}
+
+// 目的: 円形プログレスリングでユーザーに進捗状況を視覚的に伝える
 function CircularProgress({ value, total }: { value: number; total: number }) {
   const percentage = total > 0 ? (value / total) * 100 : 0;
   const radius = 40;
@@ -91,116 +83,123 @@ function CircularProgress({ value, total }: { value: number; total: number }) {
 
 export default function QuestionsPage() {
   const router = useRouter();
-  const [bayesState, setBayesState] = useState<BayesianState | null>(null);
-  const [currentQuestion, setCurrentQuestion] = useState<NextQuestion | null>(null);
+
+  // 目的: Gemini全面移行後のシンプルな状態管理（ベイズ推論不使用）
+  const [state, setState] = useState<SimpleState>({
+    answers: [],
+    questionCount: 0,
+    questionHistory: [],
+  });
+
+  const [currentQuestion, setCurrentQuestion] = useState<CurrentQuestion | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isLoadingQuestion, setIsLoadingQuestion] = useState(false);
-  // 目的: セッション情報を保持してAPI呼び出し時に渡す
+
+  // 目的: セッション属性をAPIに渡すために保持する
   const [sessionInfo, setSessionInfo] = useState<{ ageRange: string; gender: string } | null>(null);
 
-  // 目的: Gemini APIから次の質問を取得する。失敗時はローカルのエントロピー計算にフォールバック
+  // 目的: Gemini APIを呼び出して次の質問または診断結果を取得する
   const fetchNextQuestion = useCallback(
     async (
-      state: BayesianState,
+      currentState: SimpleState,
       session: { ageRange: string; gender: string } | null
-    ): Promise<NextQuestion | null> => {
+    ): Promise<{ type: "question"; question: string; explanation: string } | { type: "result"; results: ResultItem[] } | null> => {
       try {
         const res = await fetch("/api/next-question", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            answers: state.answers,
-            probabilities: state.probabilities,
-            questionCount: state.questionCount,
+            answers: currentState.answers,
             ageRange: session?.ageRange ?? "21-40",
-            gender: session?.gender ?? "other",
+            gender: session?.gender ?? "unspecified",
           }),
         });
+
+        if (!res.ok) return null;
+
         const data = await res.json();
-        if (data.question && !data.fallbackToLocal) {
-          return data.question as NextQuestion;
+
+        if (data.type === "question" || data.type === "result") {
+          return data;
         }
+        return null;
       } catch {
-        // API障害時は無視してフォールバック
+        // API障害時はnullを返して呼び出し元でハンドリング
+        return null;
       }
-      // 目的: API失敗時はローカルのエントロピーベース選択にフォールバック
-      return selectNextQuestion(state);
     },
     []
   );
 
-  // 目的: localStorageからセッション・ベイズ状態を復元または初期化する
+  // 目的: localStorageからセッション・状態を復元または初期化してAPIで最初の質問を取得する
   useEffect(() => {
     const init = async () => {
       try {
         // セッション情報を読み取る
         const raw = localStorage.getItem(SESSION_KEY);
-        let session: { ageRange: string; gender: string } | null = null;
-        if (raw) {
-          const parsed: SessionData = JSON.parse(raw);
-          session = { ageRange: parsed.ageGroup, gender: parsed.gender };
-          setSessionInfo(session);
-        }
-
-        // ベイズ状態の復元を試みる（途中離脱→復帰対応）
-        const savedBayes = localStorage.getItem(BAYES_STATE_KEY);
-        if (savedBayes) {
-          const restored = deserializeState(savedBayes);
-          if (restored) {
-            setBayesState(restored);
-            setIsLoadingQuestion(true);
-            const q = await fetchNextQuestion(restored, session);
-            setCurrentQuestion(q);
-            setIsLoadingQuestion(false);
-            setIsLoaded(true);
-            return;
-          }
-        }
-
         if (!raw) {
           router.push("/");
           return;
         }
 
-        const ageRange = session!.ageRange as AgeRange;
-        const gender =
-          session!.gender === "male"
-            ? "male"
-            : session!.gender === "female"
-            ? "female"
-            : "other";
+        const parsed: SessionData = JSON.parse(raw);
+        const session = { ageRange: parsed.ageGroup, gender: parsed.gender };
+        setSessionInfo(session);
 
-        const initialState = createInitialState(ageRange, gender as Gender);
-        setBayesState(initialState);
+        // 途中離脱からの復帰: 保存済み状態があれば復元する
+        const savedState = localStorage.getItem(AKINATOR_STATE_KEY);
+        if (savedState) {
+          const restored: SimpleState = JSON.parse(savedState);
+          setState(restored);
+
+          // 復元後は最後の質問をquestionHistoryから再表示する
+          if (restored.questionHistory.length > 0) {
+            const lastQ = restored.questionHistory[restored.questionHistory.length - 1];
+            setCurrentQuestion(lastQ);
+            setIsLoaded(true);
+            return;
+          }
+        }
+
+        // 初回: APIを呼んで最初の質問を取得する
         setIsLoadingQuestion(true);
-        const q = await fetchNextQuestion(initialState, session);
-        setCurrentQuestion(q);
+        const initialState: SimpleState = { answers: [], questionCount: 0, questionHistory: [] };
+        const response = await fetchNextQuestion(initialState, session);
         setIsLoadingQuestion(false);
+
+        if (!response || response.type !== "question") {
+          // 最初の質問が取得できない場合はスタートに戻す
+          router.push("/");
+          return;
+        }
+
+        setCurrentQuestion({ question: response.question, explanation: response.explanation });
       } catch {
         router.push("/");
+        return;
       }
+
       setIsLoaded(true);
     };
+
     init();
   }, [router, fetchNextQuestion]);
 
-  // 目的: ベイズ状態をlocalStorageに保存して途中離脱に備える
-  const saveBayesState = useCallback((state: BayesianState) => {
+  // 目的: 状態をlocalStorageに保存して途中離脱に備える
+  const saveState = useCallback((newState: SimpleState) => {
     try {
-      localStorage.setItem(BAYES_STATE_KEY, serializeState(state));
+      localStorage.setItem(AKINATOR_STATE_KEY, JSON.stringify(newState));
     } catch {
       // 保存失敗は無視して続行
     }
   }, []);
 
-  // 目的: 結果画面に遷移する前に結果を計算してlocalStorageに保存する
+  // 目的: 診断結果をlocalStorageに保存して結果画面へ遷移する
   const navigateToResults = useCallback(
-    (state: BayesianState) => {
-      const results = computeResults(state);
+    (results: ResultItem[]) => {
       try {
         localStorage.setItem(RESULTS_KEY, JSON.stringify(results));
-        // ベイズ状態は結果確定後にクリア
-        localStorage.removeItem(BAYES_STATE_KEY);
+        localStorage.removeItem(AKINATOR_STATE_KEY);
       } catch {
         // 保存失敗は無視
       }
@@ -209,121 +208,80 @@ export default function QuestionsPage() {
     [router]
   );
 
-  // 目的: ユーザーが回答を選択し、確率を更新して次の質問へ進む（AI質問選択）
+  // 目的: ユーザーの回答をstateに追加してGemini APIで次の質問または診断結果を取得する
   const handleAnswer = useCallback(
-    async (answer: Answer) => {
-      if (!bayesState || !currentQuestion) return;
+    async (answer: "yes" | "no" | "unknown") => {
+      if (!currentQuestion) return;
 
-      // 回答前の確率をスナップショットとして履歴に追加
-      const newProbabilitiesHistory = [
-        ...bayesState.probabilitiesHistory,
-        { ...bayesState.probabilities },
+      // 目的: 回答をQ&A履歴に追記して新しい状態を作る
+      const newAnswers = [
+        ...state.answers,
+        { question: currentQuestion.question, answer },
       ];
-
-      // ベイズ更新
-      const newProbs = updateProbabilities(
-        bayesState.probabilities,
-        currentQuestion.symptomId,
-        currentQuestion.diseaseId,
-        answer
-      );
-
-      const newState: BayesianState = {
-        probabilities: newProbs,
-        answers: {
-          ...bayesState.answers,
-          [currentQuestion.symptomId]: answer,
-        },
-        questionCount: bayesState.questionCount + 1,
-        // 目的: 「前の質問に戻る」のために回答履歴を追記する
-        answerHistory: [
-          ...bayesState.answerHistory,
-          { symptomId: currentQuestion.symptomId, answer },
-        ],
-        probabilitiesHistory: newProbabilitiesHistory,
+      const newQuestionHistory = [
+        ...state.questionHistory,
+        { question: currentQuestion.question, explanation: currentQuestion.explanation },
+      ];
+      const newState: SimpleState = {
+        answers: newAnswers,
+        questionCount: state.questionCount + 1,
+        questionHistory: newQuestionHistory,
       };
 
-      // 収束判定
-      if (shouldStop(newState)) {
-        navigateToResults(newState);
-        return;
-      }
+      setState(newState);
+      saveState(newState);
 
-      // 目的: Gemini APIで次の質問を取得（ローディング表示付き）
+      // 目的: AI質問選択中のローディング表示を出してAPIを呼ぶ
       setIsLoadingQuestion(true);
-      setBayesState(newState);
-      saveBayesState(newState);
-
-      const nextQuestion = await fetchNextQuestion(newState, sessionInfo);
+      const response = await fetchNextQuestion(newState, sessionInfo);
       setIsLoadingQuestion(false);
 
-      if (!nextQuestion) {
-        navigateToResults(newState);
+      if (!response) {
+        // API障害時はそのままローディングを外すだけ（操作可能な状態を維持）
         return;
       }
 
-      setCurrentQuestion(nextQuestion);
+      if (response.type === "result") {
+        // 目的: Geminiが診断十分と判断したら結果画面へ遷移する
+        navigateToResults(response.results);
+        return;
+      }
+
+      if (response.type === "question") {
+        setCurrentQuestion({ question: response.question, explanation: response.explanation });
+      }
     },
-    [bayesState, currentQuestion, navigateToResults, saveBayesState, fetchNextQuestion, sessionInfo]
+    [state, currentQuestion, sessionInfo, fetchNextQuestion, saveState, navigateToResults]
   );
 
-  // 目的: ユーザーが前の質問に戻る（最初の質問の場合は緊急チェックへ遷移）
+  // 目的: ユーザーが前の質問に戻る（最初の質問なら緊急チェックへ遷移）
   const handleBack = useCallback(() => {
-    if (!bayesState) return;
-
     // 履歴が空 = 最初の質問 → 緊急チェックへ戻る
-    if (bayesState.answerHistory.length === 0) {
+    if (state.questionHistory.length === 0) {
       router.push("/emergency");
       return;
     }
 
-    // 最後の回答をpopして前の状態を復元する
-    const newHistory = [...bayesState.answerHistory];
-    const lastEntry = newHistory.pop();
-    if (!lastEntry) return;
+    // 目的: 最後の回答と質問履歴をpopして前の状態に戻す
+    const newAnswers = state.answers.slice(0, -1);
+    const newQuestionHistory = state.questionHistory.slice(0, -1);
+    const prevQuestion = state.questionHistory[state.questionHistory.length - 1];
 
-    const newProbsHistory = [...bayesState.probabilitiesHistory];
-    // probabilitiesHistoryの最後がこのステップ直前の確率スナップショット
-    const restoredProbs = newProbsHistory.pop() ?? bayesState.probabilities;
-
-    // answersからも最後の回答を削除
-    const newAnswers = { ...bayesState.answers };
-    delete newAnswers[lastEntry.symptomId];
-
-    const restoredState: BayesianState = {
-      probabilities: restoredProbs,
+    const restoredState: SimpleState = {
       answers: newAnswers,
-      questionCount: bayesState.questionCount - 1,
-      answerHistory: newHistory,
-      probabilitiesHistory: newProbsHistory,
+      questionCount: state.questionCount - 1,
+      questionHistory: newQuestionHistory,
     };
 
-    setBayesState(restoredState);
-    saveBayesState(restoredState);
+    setState(restoredState);
+    saveState(restoredState);
 
-    // 戻った後の次の質問を再計算（popした症状IDの質問を復元する）
-    // 目的: 元の質問を全疾患から検索して再表示する
-    for (const disease of DISEASES_DB) {
-      const symptom = disease.symptoms.find(
-        (s) => s.id === lastEntry.symptomId
-      );
-      if (symptom) {
-        setCurrentQuestion({
-          symptomId: symptom.id,
-          diseaseId: disease.id,
-          question: symptom.question,
-          explanation: symptom.explanation,
-        });
-        return;
-      }
-    }
-
-    // 見つからない場合はselectNextQuestionにフォールバック
-    setCurrentQuestion(selectNextQuestion(restoredState));
-  }, [bayesState, router, saveBayesState]);
+    // 目的: 戻った先の質問を再表示する（APIを呼び直さずquestionHistoryを使う）
+    setCurrentQuestion(prevQuestion);
+  }, [state, router, saveState]);
 
   // ロード前はスピナーを表示
-  if (!isLoaded || !bayesState || !currentQuestion) {
+  if (!isLoaded) {
     return (
       <main className="min-h-screen flex items-center justify-center">
         <div className="w-8 h-8 rounded-full border-4 border-[#005C55] border-t-transparent animate-spin" />
@@ -331,14 +289,14 @@ export default function QuestionsPage() {
     );
   }
 
-  const progress = bayesState.questionCount + 1;
+  const progress = state.questionCount + 1;
   const total = MAX_QUESTIONS;
 
   // 回答済みインジケーター用（最大15ドット）
   const dots = Array.from({ length: total }, (_, i) => i);
 
   // 目的: 戻るボタンのラベルを現在の状態に応じて切り替える
-  const isFirstQuestion = bayesState.answerHistory.length === 0;
+  const isFirstQuestion = state.questionHistory.length === 0;
   const backButtonLabel = isFirstQuestion
     ? "← 緊急チェックに戻る"
     : "← 前の質問に戻る";
@@ -375,10 +333,10 @@ export default function QuestionsPage() {
             {isLoadingQuestion ? (
               // 目的: AI質問選択中のローディング表示
               <div className="flex flex-col items-center gap-3 py-6">
-                <div className="w-6 h-6 rounded-full border-3 border-[#005C55] border-t-transparent animate-spin" />
+                <div className="w-6 h-6 rounded-full border-[3px] border-[#005C55] border-t-transparent animate-spin" />
                 <p className="text-sm text-[#3E4947]">AIが次の質問を考えています…</p>
               </div>
-            ) : (
+            ) : currentQuestion ? (
               <>
                 <h2
                   className="text-2xl font-extrabold text-[#191C1E] leading-snug mb-6"
@@ -387,7 +345,7 @@ export default function QuestionsPage() {
                   {currentQuestion.question}
                 </h2>
 
-                {/* 「なぜこの質問？」アコーディオン（DBのexplanationを表示） */}
+                {/* 「なぜこの質問？」アコーディオン（Geminiのexplanationを表示） */}
                 <Accordion type="single" collapsible>
                   <AccordionItem value="reason">
                     <AccordionTrigger className="text-[#005C55] text-sm font-medium">
@@ -404,7 +362,7 @@ export default function QuestionsPage() {
                   </AccordionItem>
                 </Accordion>
               </>
-            )}
+            ) : null}
           </CardContent>
         </Card>
 
@@ -414,7 +372,7 @@ export default function QuestionsPage() {
             onClick={() => handleAnswer("yes")}
             variant="default"
             className="w-full h-14 text-base font-bold"
-            disabled={isLoadingQuestion}
+            disabled={isLoadingQuestion || !currentQuestion}
           >
             はい
           </Button>
@@ -422,7 +380,7 @@ export default function QuestionsPage() {
             onClick={() => handleAnswer("no")}
             variant="outline"
             className="w-full h-14 text-base font-bold"
-            disabled={isLoadingQuestion}
+            disabled={isLoadingQuestion || !currentQuestion}
           >
             いいえ
           </Button>
@@ -430,7 +388,7 @@ export default function QuestionsPage() {
             onClick={() => handleAnswer("unknown")}
             variant="secondary"
             className="w-full h-14 text-base font-bold text-[#3E4947]"
-            disabled={isLoadingQuestion}
+            disabled={isLoadingQuestion || !currentQuestion}
           >
             わからない
           </Button>
@@ -439,8 +397,8 @@ export default function QuestionsPage() {
         {/* 回答済みインジケーター */}
         <div className="flex justify-center gap-2 mt-2">
           {dots.map((i) => {
-            const isAnswered = i < bayesState.questionCount;
-            const isCurrent = i === bayesState.questionCount;
+            const isAnswered = i < state.questionCount;
+            const isCurrent = i === state.questionCount;
             return (
               <div
                 key={i}
