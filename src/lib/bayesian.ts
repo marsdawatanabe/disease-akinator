@@ -32,7 +32,10 @@ export interface NextQuestion {
 const MAX_QUESTIONS = 15;
 
 // 収束判定: トップ候補の確率がこの閾値以上になれば終了
-const CONVERGENCE_THRESHOLD = 0.6;
+const CONVERGENCE_THRESHOLD = 0.75;
+
+// 目的: 最低限この回数の質問に回答するまで収束判定をスキップする（早期終了防止）
+const MIN_QUESTIONS_BEFORE_CONVERGENCE = 5;
 
 // 目的: 確率が0にならないようにする最小値（0除算防止）
 const MIN_PROBABILITY = 0.001;
@@ -112,10 +115,10 @@ function normalizeProbabilities(
  *   ポイント: 「はい」で確率が上がり、「いいえ」で確率が下がる必要がある
  *
  *   その症状を持つ疾患（weightが定義されている）:
- *     「はい」→ P(D) × (1 + weight × 3)  ← 1を超える係数で確率を上げる
- *     「いいえ」→ P(D) × (1 - weight × 0.7) ← 1未満の係数で確率を下げる（完全排除は避ける）
+ *     「はい」→ P(D) × (1 + weight × 1.5)  ← 1を超える係数で確率を上げる（緩やかに）
+ *     「いいえ」→ P(D) × (1 - weight × 0.5) ← 1未満の係数で確率を下げる（完全排除は避ける）
  *   その症状を持たない疾患:
- *     「はい」→ P(D) × 0.4  ← その疾患にない症状がある = 大きく下げる
+ *     「はい」→ P(D) × 0.6  ← その疾患にない症状がある = 下げる（穏やかに）
  *     「いいえ」→ P(D) × 1.0  ← 変化なし（持っていない症状がないのは中立）
  *   「わからない」→ 確率を変更しない
  */
@@ -138,17 +141,17 @@ export function updateProbabilities(
     if (symptom) {
       // 目的: 症状を持つ疾患の確率を回答に応じて増減する
       if (answer === "yes") {
-        // 「はい」→ 尤度比で確率を上げる（1 + weight×3 なので weight=0.5 で 2.5倍、weight=1.0 で 4倍）
-        updated[disease.id] = currentP * (1 + symptom.weight * 3);
+        // 「はい」→ 尤度比で確率を上げる（1 + weight×1.5 なので weight=0.5 で 1.75倍、weight=1.0 で 2.5倍）
+        updated[disease.id] = currentP * (1 + symptom.weight * 1.5);
       } else {
-        // 「いいえ」→ 症状がないので確率を下げる（weight=1.0 で 0.3倍、weight=0.3 で 0.79倍）
-        updated[disease.id] = currentP * Math.max(0.05, 1 - symptom.weight * 0.7);
+        // 「いいえ」→ 症状がないので確率を下げる（weight=1.0 で 0.5倍、weight=0.3 で 0.85倍）
+        updated[disease.id] = currentP * Math.max(0.1, 1 - symptom.weight * 0.5);
       }
     } else {
       // 目的: 該当症状を持たない疾患の確率を調整する
       if (answer === "yes") {
-        // 「はい」→ この疾患にない症状をユーザーが持っている = この疾患の可能性を下げる
-        updated[disease.id] = currentP * 0.4;
+        // 「はい」→ この疾患にない症状をユーザーが持っている = この疾患の可能性を下げる（穏やかに）
+        updated[disease.id] = currentP * 0.6;
       } else {
         // 「いいえ」→ この疾患にない症状がない = 中立（変化なし）
         updated[disease.id] = currentP;
@@ -299,8 +302,8 @@ export function computeResults(
       }
     }
 
-    // 関連度: 上位疾患を100%として相対スコアを計算（最低5%のフロアを設ける）
-    const relativeScore = Math.max(5, Math.round((prob / topProb) * 100));
+    // 関連度: 上位疾患を基準に相対スコアを計算（最低5%、最大85%に制限して誤解を防ぐ）
+    const relativeScore = Math.min(85, Math.max(5, Math.round((prob / topProb) * 85)));
 
     return {
       diseaseId: disease.id,
@@ -320,6 +323,9 @@ export function computeResults(
 export function shouldStop(state: BayesianState): boolean {
   // 質問数が上限に達した
   if (state.questionCount >= MAX_QUESTIONS) return true;
+
+  // 目的: 最低質問数に達するまでは収束判定をスキップして早期終了を防ぐ
+  if (state.questionCount < MIN_QUESTIONS_BEFORE_CONVERGENCE) return false;
 
   // トップ候補の確率が収束閾値を超えた
   const topProb = Math.max(...Object.values(state.probabilities));
