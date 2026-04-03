@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   AlertTriangle,
+  AlertCircle,
   RotateCcw,
   ChevronRight,
   Stethoscope,
@@ -134,6 +135,16 @@ export default function ResultsPage() {
           <p className="text-white/50 text-xs">
             ※関連度はあなたの回答に基づく相対的な指標です
           </p>
+        </div>
+
+        {/* 目的: 免責事項を赤字で目立たせてユーザーに医師受診を促す */}
+        <div className="bg-red-50 border-2 border-red-300 rounded-2xl p-4">
+          <div className="flex items-start gap-2">
+            <AlertCircle className="w-5 h-5 shrink-0 mt-0.5 text-red-600" />
+            <p className="text-sm font-bold text-red-600 leading-relaxed">
+              この結果はあくまで目安です。必ず医師に相談してください。
+            </p>
+          </div>
         </div>
 
         {/* 目的: 有効回答が不足している場合にフォールバックメッセージを表示する */}

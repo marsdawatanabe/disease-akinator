@@ -152,13 +152,15 @@ export default function StartPage() {
           はじめる →
         </Button>
 
-        {/* 免責テキスト */}
-        <div className="flex items-start gap-2 text-xs text-[#3E4947] px-2">
-          <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-[#7F4025]" />
-          <p>
-            このアプリは医療診断を行うものではありません。結果はあくまで参考情報であり、
-            正確な診断は必ず医師にご相談ください。緊急の場合は119番または救急外来を受診してください。
-          </p>
+        {/* 目的: 免責事項を赤字で目立たせてユーザーに医師受診を促す */}
+        <div className="bg-red-50 border-2 border-red-300 rounded-2xl p-4">
+          <div className="flex items-start gap-2">
+            <AlertCircle className="w-5 h-5 shrink-0 mt-0.5 text-red-600" />
+            <p className="text-sm font-bold text-red-600 leading-relaxed">
+              この結果はあくまで目安です。必ず医師に相談してください。
+              緊急の場合は119番または救急外来を受診してください。
+            </p>
+          </div>
         </div>
       </div>
     </main>
