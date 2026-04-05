@@ -1,45 +1,45 @@
 # コーダー完了報告
 
 ## ステータス
-完了 — npm run build 通過（エラー・警告ゼロ）
+完了 (TypeScriptエラーなし)
 
-## 作成・変更したファイル
+## 実施内容 — Gemini API全面移行
 
-### 新規作成
-- `src/types/index.ts` — 全型定義（Disease, Symptom, EmergencyCheck, DiseaseDB, Answer, Gender, AgeRange, QuestionState, ResultItem）
-- `src/lib/bayesian.ts` — ベイジアン推論エンジン
+### 1. `/src/app/api/next-question/route.ts` — 全面書き換え
+- ベイズ推論・diseases.json依存を完全除去
+- リクエストボディを `{ answers, ageRange, gender }` に変更
+- Geminiへのプロンプトをルール・出力形式付きで構築する `buildPrompt()` を実装
+- Geminiレスポンスから `type: "question"` / `type: "result"` のJSONを抽出する `extractJson()` を実装（コードブロックあり・なし両対応）
+- model: gemini-2.5-flash / temperature: 0.3 / maxOutputTokens: 1500 / thinkingBudget: 0
+- エラー時は `{ type: "error", message: "..." }` を返す
 
-### 変更
-- `src/app/emergency/page.tsx` — DBデータ（emergencyChecks）に接続
-- `src/app/questions/page.tsx` — ベイジアンエンジン接続・localStorage途中保存
-- `src/app/results/page.tsx` — localStorage結果読み込み・実データ表示
+### 2. `/src/app/questions/page.tsx` — 全面書き換え
+- ベイズモジュール・diseases.jsonのimportをすべて削除
+- `BayesianState` → `SimpleState` に置き換え
+- localStorageキーを `"akinator_bayes_state"` → `"akinator_state"` に変更
+- 初期化時にAPIを呼んで最初の質問を取得
+- 回答後にAPIを呼んで `type: "question"` なら次の質問、`type: "result"` なら /results に遷移
+- 「前の質問に戻る」: `questionHistory` からpopして前の質問を再表示（APIを呼び直さない）
+- `CircularProgress` コンポーネントはそのまま残存
+- MAX_QUESTIONS=15 のままプログレス表示に使用
 
-## 実装内容
+### 3. `/src/app/results/page.tsx` — 軽微な修正
+- `ResultItemWithFallback` 型を削除（Geminiの結果をそのまま使うため不要）
+- `BAYES_STATE_KEY` → `AKINATOR_STATE_KEY ("akinator_state")` に変更
+- `isFallback` 判定: `fallback` フラグの代わりに `answerCount <= 2` で判定
+- `handleRestart` のlocalStorage削除キーを更新
 
-### ベイジアン推論エンジン（src/lib/bayesian.ts）
-- `initializeProbabilities(ageRange, gender)` — 年齢・性別から事前確率を計算
-- `createInitialState(ageRange, gender)` — 初期BayesianStateを生成
-- `updateProbabilities(probs, symptomId, diseaseId, answer)` — ベイズ更新
-  - はい: P(D) × (0.5 + weight × 0.5) で強化
-  - いいえ: P(D) × (1 - weight × 0.5) で弱体化
-  - わからない: 変更なし
-- `selectNextQuestion(state)` — 情報利得最大化で次の質問を選択
-- `computeResults(state)` — 上位5件のResultItemを生成
-- `shouldStop(state)` — 収束判定（15問到達 or トップ確率≥0.6）
+### 4. `/src/types/index.ts` — 更新
+- `QuestionState` 型を削除
+- `SimpleState` 型を追加してexport
+- `ResultItem.diseaseId` をoptional (`diseaseId?`) に変更（GeminiはdiseaseIdを返さないため）
 
-### 画面接続
-- emergency: diseasesData.emergencyChecks を static import で表示、チェック時にdescriptionも表示
-- questions: BayesianState を localStorage に都度保存（途中離脱→復帰対応）、selectNextQuestion で質問を動的選択、shouldStop で結果画面へ自動遷移
-- results: localStorage の akinator_results を読み込み、上位1件の受診科をヒーローに表示、matchedSymptoms（回答との一致）をアコーディオン内に表示
+## 変更していないもの
+- `src/lib/bayesian.ts` — 削除せず残存（参照なし）
+- `src/data/diseases.json` — 削除せず残存（emergency/page.tsxが使用）
+- `src/app/emergency/page.tsx` — 変更なし
+- `src/app/page.tsx` — 変更なし
+- 既存UIデザイン（色・フォント・レイアウト）— 変更なし
 
-### localStorage キー
-| キー | 内容 |
-|------|------|
-| akinator_session | 年齢・性別・開始時刻 |
-| akinator_bayes_state | 途中のベイズ状態（質問完了後クリア） |
-| akinator_results | 最終結果（上位5件のResultItem） |
-
-## 注意事項
-- 既存UIデザイン（色・レイアウト・コンポーネント）は一切変更していない
-- diseases.jsonは static import（fetchなし）
-- "use client" は全ページに設定済み
+## 検証
+- `npx tsc --noEmit` → エラーなし
